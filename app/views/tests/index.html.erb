@@ -1,0 +1,14 @@
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Text</th>
+    <th colspan="2"></th>
+  </tr>
+
+  <% @tests.each do |test| %>
+      <tr>
+        <td><%= test.name %></td>
+        <td><%= link_to 'Show', test_path(test) %></td>
+      </tr>
+  <% end %>
+</table>
