@@ -12,7 +12,7 @@ class Api::TestsController < ApplicationController
   def create
     input = JSON.parse(request.body.read)
     @test = Test.new input
-    @test.test_run = TestRun.find params[:test_run_id]
+    @test.run = Run.find params[:run_id]
     @test.save!
     render json: @test
   end

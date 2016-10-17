@@ -7,7 +7,7 @@ class CreateTests < ActiveRecord::Migration[5.0]
       t.text :notes
       t.date :start_time
       t.date :end_time
-      t.references :test_run, foreign_key: true
+      t.references :run, foreign_key: true
 
       t.timestamps
     end
