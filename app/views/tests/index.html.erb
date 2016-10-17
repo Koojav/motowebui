@@ -8,7 +8,7 @@
   <% @tests.each do |test| %>
       <tr>
         <td><%= test.name %></td>
-        <td><%= link_to 'Show', suite_run_test_path(test.test,test) %></td>
+        <td><%= link_to 'Show', suite_run_test_path(test.run.suite.id, test.run.id, test.id) %></td>
       </tr>
   <% end %>
 </table>
