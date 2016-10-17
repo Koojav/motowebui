@@ -1,0 +1,14 @@
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Text</th>
+    <th colspan="2"></th>
+  </tr>
+
+  <% @runs.each do |run| %>
+      <tr>
+        <td><%= run.name %></td>
+        <td><%= link_to 'Show', suite_run_path(run.suite.id, run.id) %></td>
+      </tr>
+  <% end %>
+</table>
