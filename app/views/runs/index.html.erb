@@ -1,14 +1,26 @@
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Text</th>
-    <th colspan="2"></th>
-  </tr>
+<div class="box-body table-responsive no-padding">
+  <table class="table table-hover">
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Start time</th>
+      <th>Duration</th>
+      <th>Assignee</th>
+      <th>Result</th>
+    </tr>
 
-  <% @runs.each do |run| %>
-      <tr>
-        <td><%= run.name %></td>
-        <td><%= link_to 'Show', suite_run_path(run.suite.id, run.id) %></td>
-      </tr>
-  <% end %>
-</table>
+    <% @runs.each do |run| %>
+        <tr>
+          <td><%= run.id %></td>
+          <td><%= link_to run.name, suite_run_tests_path(run.suite.id, run.id) %></td>
+          <td><%= run.start_time %></td>
+          <td><%= run_duration(run) %></td>
+          <td><%= tester_name %></td>
+          <td><%= run_result %></td>
+        </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>

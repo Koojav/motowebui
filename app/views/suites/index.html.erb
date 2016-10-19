@@ -1,14 +1,20 @@
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Text</th>
-    <th colspan="2"></th>
-  </tr>
+<div class="box-body table-responsive no-padding">
+  <table class="table table-hover">
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Notes</th>
+    </tr>
 
-  <% @suites.each do |suite| %>
-      <tr>
-        <td><%= suite.name %></td>
-        <td><%= link_to 'Show', suite_path(suite.id) %></td>
-      </tr>
-  <% end %>
-</table>
+    <% @suites.each do |suite| %>
+    <tr>
+      <td><%= suite.id %></td>
+      <td><%= link_to suite.name, suite_runs_path(suite.id) %></td>
+      <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+    </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>

@@ -4,11 +4,9 @@ class CreateRuns < ActiveRecord::Migration[5.0]
       t.string :name
       t.references :tester, foreign_key: true
       t.references :result, foreign_key: true
-      t.date :start_time
-      t.date :end_time
+      t.datetime :start_time
+      t.datetime :end_time
       t.references :suite, foreign_key: true
-
-      t.timestamps
     end
   end
 end

@@ -13,35 +13,27 @@
 ActiveRecord::Schema.define(version: 20161011113222) do
 
   create_table "results", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "runs", force: :cascade do |t|
     t.string   "name"
     t.integer  "tester_id"
     t.integer  "result_id"
-    t.date     "start_time"
-    t.date     "end_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.integer  "suite_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["result_id"], name: "index_runs_on_result_id"
     t.index ["suite_id"], name: "index_runs_on_suite_id"
     t.index ["tester_id"], name: "index_runs_on_tester_id"
   end
 
   create_table "suites", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "testers", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "tests", force: :cascade do |t|
@@ -49,11 +41,9 @@ ActiveRecord::Schema.define(version: 20161011113222) do
     t.integer  "result_id"
     t.text     "log"
     t.text     "notes"
-    t.date     "start_time"
-    t.date     "end_time"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.integer  "run_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["result_id"], name: "index_tests_on_result_id"
     t.index ["run_id"], name: "index_tests_on_run_id"
   end
