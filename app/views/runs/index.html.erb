@@ -14,10 +14,11 @@
         <tr>
           <td><%= run.id %></td>
           <td><%= link_to run.name, suite_run_tests_path(run.suite.id, run.id) %></td>
-          <td><%= run.start_time %></td>
-          <td><%= run_duration(run) %></td>
-          <td><%= tester_name %></td>
-          <td><%= run_result %></td>
+          <td><%= run.start_time.to_s(:db) %></td>
+          <td><%= run.display_duration %></td>
+          <td><%= run.tester_name %></td>
+          <td><button type="button" class="btn btn-block <%= Result.find(run.result_id).display_style_btn %> btn-xs"><%= Result.find(run.result_id).name %></button></td>
+
         </tr>
     <% end %>
 

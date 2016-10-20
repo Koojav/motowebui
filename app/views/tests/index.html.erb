@@ -1,14 +1,25 @@
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Text</th>
-    <th colspan="2"></th>
-  </tr>
+<div class="box-body table-responsive no-padding">
+  <table class="table table-hover">
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Start time</th>
+      <th>Duration</th>
+      <th>Result</th>
+    </tr>
 
-  <% @tests.each do |test| %>
-      <tr>
-        <td><%= test.name %></td>
-        <td><%= link_to 'Show', suite_run_test_path(test.run.suite.id, test.run.id, test.id) %></td>
-      </tr>
-  <% end %>
-</table>
+    <% @tests.each do |test| %>
+        <tr>
+          <td><%= test.id %></td>
+          <td><%= link_to test.name, suite_run_test_path(test.run.suite.id, test.run.id, test.id) %></td>
+          <td><%= test.start_time.to_s(:db) %></td>
+          <td><%= test.display_duration %></td>
+          <td><button type="button" class="btn btn-block <%= Result.find(test.result_id).display_style_btn %> btn-xs"><%= Result.find(test.result_id).name %></button></td>
+        </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+</div>
+

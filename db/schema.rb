@@ -13,13 +13,14 @@
 ActiveRecord::Schema.define(version: 20161011113222) do
 
   create_table "results", force: :cascade do |t|
-    t.string "name"
+    t.string  "name"
+    t.boolean "manual", default: false
   end
 
   create_table "runs", force: :cascade do |t|
     t.string   "name"
-    t.integer  "tester_id"
-    t.integer  "result_id"
+    t.integer  "tester_id",  default: 1, null: false
+    t.integer  "result_id",  default: 1, null: false
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "suite_id"
@@ -38,7 +39,7 @@ ActiveRecord::Schema.define(version: 20161011113222) do
 
   create_table "tests", force: :cascade do |t|
     t.string   "name"
-    t.integer  "result_id"
+    t.integer  "result_id",  default: 1, null: false
     t.text     "log"
     t.text     "notes"
     t.datetime "start_time"
