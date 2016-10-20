@@ -1,25 +1,29 @@
-<div class="box-body table-responsive no-padding">
-  <table class="table table-hover">
-    <tbody>
+<table id="testDataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
     <tr>
-      <th>ID</th>
       <th>Name</th>
       <th>Start time</th>
       <th>Duration</th>
       <th>Result</th>
     </tr>
-
+  </thead>
+  <tbody>
     <% @tests.each do |test| %>
         <tr>
-          <td><%= test.id %></td>
           <td><%= link_to test.name, suite_run_test_path(test.run.suite.id, test.run.id, test.id) %></td>
           <td><%= test.start_time.to_s(:db) %></td>
           <td><%= test.display_duration %></td>
           <td><button type="button" class="btn btn-block <%= Result.find(test.result_id).display_style_btn %> btn-xs"><%= Result.find(test.result_id).name %></button></td>
         </tr>
     <% end %>
+  </tbody>
+</table>
 
-    </tbody>
-  </table>
-</div>
+<script>
+
+  $(document).ready(function() {
+    $('#testDataTable').DataTable();
+  } );
+
+</script>
 
