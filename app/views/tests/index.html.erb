@@ -1,4 +1,4 @@
-<table id="testDataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<table id="testsDataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
   <thead>
     <tr>
       <th>Name</th>
@@ -22,7 +22,14 @@
 <script>
 
   $(document).ready(function() {
-    $('#testDataTable').DataTable();
+    $('#testsDataTable').DataTable(
+        {
+          paging: <%= @tests.length > 25 ? 'true' : 'false' %>,
+          pageLength: 25,
+          info: false,
+          lengthMenu: [ 25, 50, 100, 200 ]
+        }
+    );
   } );
 
 </script>
