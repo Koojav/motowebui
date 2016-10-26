@@ -7,6 +7,9 @@ class RunsController < ApplicationController
   def show
     @run = Run.find(params[:id])
     @tests = Test.where(run_id: params[:id])
+
+    # @tests_pass = @tests.group(:type).size
+    # true
   end
 
 end
