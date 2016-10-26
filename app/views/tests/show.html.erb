@@ -1,7 +1,1 @@
-<p>
-  <strong>Name:</strong>
-  <%= @test.name %>
-</p>
-
-<%= link_to 'Edit', edit_suite_test_(@test) %> |
-<%= link_to 'Back', suite_run_tests_path(@test.run.suite.id, @test.run.id) %>
+<%= render 'tests/details' %>

@@ -1,6 +1,4 @@
-<p>
-  <strong>Name:</strong>
-  <%= @run.name %>
-</p>
+<%= render 'runs/details' %>
 
-<%= link_to 'Back', suite_runs_path(@run.suite.id) %>
+<%= render 'tests/list' %>
+

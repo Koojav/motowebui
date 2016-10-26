@@ -1,0 +1,35 @@
+<div class="box box-default">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-4">
+
+        <table class="table">
+          <tbody>
+          <tr>
+            <td><b>Name</b></td>
+            <td><%= @run.name %></td>
+          </tr>
+          <tr>
+            <td><b>Assignee</b></td>
+            <td><%= @run.tester_name %></td>
+          </tr>
+          <tr>
+            <td><b>Started</b></td>
+            <td><%= @run.start_time.to_s(:db) %></td>
+          </tr>
+          <tr>
+            <td><b>Duration</b></td>
+            <td><%= @run.display_duration %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-8">
+        <b>CHART/STATS GO HERE</b>
+      </div>
+
+    </div>
+
+  </div>
+</div>

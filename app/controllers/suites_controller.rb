@@ -6,6 +6,7 @@ class SuitesController < ApplicationController
 
   def show
     @suite = Suite.find(params[:id])
+    @runs = Run.where(suite_id: params[:id])
   end
 
 end

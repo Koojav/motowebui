@@ -4,6 +4,7 @@
     <title>MotoWebUI</title>
     <%= csrf_meta_tags %>
 
+    <%= stylesheet_link_tag    'application', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css' %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -29,14 +30,8 @@
         <!-- Main content -->
         <section class="content">
 
-          <div class="box box-default">
+          <%= yield %>
 
-            <div class="box-body">
-              <%= yield %>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
         </section>
         <!-- /.content -->
       </div>
@@ -46,7 +41,7 @@
     <footer class="main-footer">
       <div class="container">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 0.1
+          <b>Version</b> 0.3
         </div>
         <strong>MotoWebUI</strong>   <a href="https://github.com/bwilczek/moto">Moto Framework</a> result display project.
 
