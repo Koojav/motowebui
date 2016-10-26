@@ -6,7 +6,7 @@
         <th>Name</th>
         <th>Start time</th>
         <th>Duration</th>
-        <th>Result</th>
+        <th class="resultColumn">Result</th>
       </tr>
       </thead>
       <tbody>
@@ -51,7 +51,7 @@
           info: false,
           lengthMenu: [25, 50, 100, 200],
           columnDefs: [
-            { targets: [-1], data: function(row, type, set, meta){
+            { targets: ['resultColumn'], data: function(row, type, set, meta){
               if (type === 'set')
               {
                 row.val = set;
