@@ -49,7 +49,27 @@
           paging: <%= @tests.length > 25 ? 'true' : 'false' %>,
           pageLength: 25,
           info: false,
-          lengthMenu: [25, 50, 100, 200]
+          lengthMenu: [25, 50, 100, 200],
+          columnDefs: [
+            { targets: [-1], data: function(row, type, set, meta){
+              if (type === 'set')
+              {
+                row.val = set;
+                row.val_display = set;
+                row.val_filter = $(set).find('.btnResult').text();
+              }
+              else if (type === 'display')
+              {
+                return row.val_display
+              }
+              else if (type === 'filter')
+              {
+                return row.val_filter
+              }
+
+              return row.val;
+            }}
+          ]
         }
     );
 
