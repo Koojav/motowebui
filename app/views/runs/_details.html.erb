@@ -21,15 +21,60 @@
             <td><b>Duration</b></td>
             <td><%= @run.display_duration %></td>
           </tr>
+          <tr>
+            <td><b>Tests</b></td>
+            <td><%= @tests.length %></td>
+          </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="col-md-8">
-        <b>CHART/STATS GO HERE</b>
+      <div class="col-md-2"></div>
+
+      <div class="col-md-4" >
+        <div class="chart-responsive">
+          <canvas id="pieChart" height="165" width="275" style="width: 275px; height: 165px;"></canvas>
+        </div>
+      </div>
+
+      <div class="col-md-2" valign="middle">
+        <ul class="chart-legend clearfix">
+          <li><i class="fa fa-circle-o text-aqua"></i> Running</li>
+          <li><i class="fa fa-circle-o text-green"></i> Passed</li>
+          <li><i class="fa fa-circle-o text-red"></i> Failed</li>
+          <li><i class="fa fa-circle-o text-red"></i> Error</li>
+          <li><i class="fa fa-circle-o text-yellow"></i> Skipped</li>
+        </ul>
       </div>
 
     </div>
 
   </div>
 </div>
+
+<script>
+  var canvas = document.getElementById("pieChart");
+  new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: ["Running", "Passed", "Failed", "Error", "Skipped"],
+      datasets: [{
+        label: '# of Votes',
+        data: <%= @stats.to_s %> ,
+        backgroundColor: [
+          'rgba(0, 192, 239, 1)',
+          'rgba(0, 166, 90, 1)',
+          'rgba(211, 55, 36, 1)',
+          'rgba(211, 55, 36, 1)',
+          'rgba(243, 156, 18, 1)'
+        ],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      }
+    }
+  });
+</script>
