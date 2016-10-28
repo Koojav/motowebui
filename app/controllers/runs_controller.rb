@@ -40,4 +40,5 @@ class RunsController < ApplicationController
     end
   end
   private :query
+
 end

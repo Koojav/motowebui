@@ -1,7 +1,8 @@
 class TestsController < ApplicationController
 
   def index
-    @tests = Test.where(run_id: params[:run_id])
+    @run = Run.find(params[:run_id])
+    @tests = @run.tests
   end
 
   def show
