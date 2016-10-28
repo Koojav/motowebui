@@ -6,6 +6,7 @@ class RunsController < ApplicationController
 
   def show
     @run = Run.find(params[:id])
+
     @tests = @run.tests
 
     results = @tests.group(:result_id).count(:result_id)
@@ -30,4 +31,13 @@ class RunsController < ApplicationController
 
   end
 
+  def query(sql)
+    results = ActiveRecord::Base.connection.execute(sql)
+    if results.present?
+      return results
+    else
+      return nil
+    end
+  end
+  private :query
 end

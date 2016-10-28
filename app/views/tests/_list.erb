@@ -10,24 +10,27 @@
       </tr>
       </thead>
       <tbody>
-      <% @tests.each do |test| %>
+
+      <%
+        result_options = Result.where(manual: true).pluck(:id,:name)
+        @tests.each do |test| %>
           <tr>
-            <td class="col-xs-6"><%= link_to test.name, suite_run_test_path(test.run.suite.id, test.run.id, test.id) %></td>
+            <td class="col-xs-6"><%= link_to test.name, suite_run_test_path(@run.suite.id, @run.id, test.id) %></td>
             <td class="col-xs-2"><%= test.start_time.to_s(:db) %></td>
             <td class="col-xs-2"><%= test.display_duration %></td>
-            <% result = Result.find(test.result_id) %>
             <td align="center">
               <div class="btn-group" role="group" style="width: 70%">
                 <%# style of this button is also modified in jQuery responsible for sending manually changed result to API %>
-                <button type="button" class="btnResult btn btn-xs btn-block dropdown-toggle <%= result.display_style_btn %>"
+                <button type="button" class="btnResult btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"
                         data-toggle="dropdown"
                         data-test-id="<%= test.id %>"
                         data-result-id="<%= test.result_id %>">
-                  <%= result.name %> <span class="caret"></span>
+                  <%= test.result.name %> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" data-test-id="<%= test.id %>">
-                  <% Result.where(manual: true).each do |manual_result| %>
-                      <li><a data-result-id="<%= manual_result.id %>"><%= manual_result.name %></a></li>
+
+                  <% result_options.each do |result_option| %>
+                      <li><a data-result-id="<%= result_option[0] %>"><%= result_option[1] %></a></li>
                   <% end %>
                 </ul>
               </div>

@@ -1,4 +1,6 @@
 class Result < ApplicationRecord
+  has_many :test
+  has_many :result
 
   def display_style_btn
     case self.id

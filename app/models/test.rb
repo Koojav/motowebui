@@ -1,5 +1,6 @@
 class Test < ApplicationRecord
-  belongs_to :run
+  belongs_to :run, dependent: :destroy
+  belongs_to :result
 
   def display_duration
     begin
