@@ -14,7 +14,8 @@ ActiveRecord::Schema.define(version: 20161011113222) do
 
   create_table "results", force: :cascade do |t|
     t.string  "name"
-    t.boolean "manual", default: false
+    t.boolean "manual",   default: false
+    t.string  "category", default: "PASS"
   end
 
   create_table "runs", force: :cascade do |t|

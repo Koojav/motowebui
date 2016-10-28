@@ -9,36 +9,19 @@ class RunsController < ApplicationController
 
     @tests = @run.tests
 
-    results = @tests.group(:result_id).count(:result_id)
-    @stats = [0, 0, 0, 0, 0]
+    unprocessed_stats = @tests.select('results.category').joins(:result).group(:category).count(:category)
 
-    results.each do |result_id, result_count|
-      case result_id
-        when 1
-          @stats[0] += result_count
-        when 2,6
-          @stats[1] += result_count
-        when 3,7
-          @stats[2] += result_count
-        when 4,8
-          @stats[3] += result_count
-        when 5,9
-          @stats[4] += result_count
-        else
-          raise 'Unknown "result_id" in "test" table.'
-      end
+    # gather all result categories
+    categories = Result.all.group(:category).count(:category).keys
+
+    @stats = {}
+
+    categories.each do |category|
+      @stats[category.downcase.to_sym] = unprocessed_stats[category] || 0
     end
 
-  end
+    @stats
 
-  def query(sql)
-    results = ActiveRecord::Base.connection.execute(sql)
-    if results.present?
-      return results
-    else
-      return nil
-    end
   end
-  private :query
 
 end

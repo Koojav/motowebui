@@ -60,7 +60,7 @@
       labels: ["Running", "Passed", "Failed", "Error", "Skipped"],
       datasets: [{
         label: '# of Votes',
-        data: <%= @stats.to_s %> ,
+        data: <%= [@stats[:running], @stats[:pass], @stats[:fail], @stats[:error], @stats[:skip],] %> ,
         backgroundColor: [
           'rgba(0, 192, 239, 1)',
           'rgba(0, 166, 90, 1)',

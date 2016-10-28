@@ -19,4 +19,8 @@ class Result < ApplicationRecord
     result_style
   end
 
+  def display_result_stats
+
+  end
+
 end
