@@ -9,7 +9,7 @@ class RunsController < ApplicationController
 
     @tests = @run.tests
 
-    unprocessed_stats = @tests.select('results.category').joins(:result).group(:category).count(:category)
+    test_result_stats = @tests.select('results.category').joins(:result).group(:category).count(:category)
 
     # gather all result categories
     categories = Result.all.group(:category).count(:category).keys
@@ -17,7 +17,7 @@ class RunsController < ApplicationController
     @stats = {}
 
     categories.each do |category|
-      @stats[category.downcase.to_sym] = unprocessed_stats[category] || 0
+      @stats[category.downcase.to_sym] = test_result_stats[category] || 0
     end
 
     @stats
