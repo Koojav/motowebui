@@ -6,7 +6,7 @@
         <th>Name</th>
         <th>Start time</th>
         <th>Duration</th>
-        <th class="resultColumn">Result</th>
+        <th class="result-column">Result</th>
       </tr>
       </thead>
       <tbody>
@@ -21,13 +21,13 @@
             <td align="center">
               <div class="btn-group" role="group" style="width: 70%">
                 <%# style of this button is also modified in jQuery responsible for sending manually changed result to API %>
-                <button type="button" class="btnResult btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"
+                <button type="button" class="btn-result btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"
                         data-toggle="dropdown"
                         data-test-id="<%= test.id %>"
                         data-result-id="<%= test.result_id %>">
                   <%= test.result.name %> <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" data-test-id="<%= test.id %>">
+                <ul class="dropdown-menu result-dropdown-menu">
 
                   <% result_options.each do |result_option| %>
                       <li><a data-result-id="<%= result_option[0] %>"><%= result_option[1] %></a></li>
@@ -43,23 +43,22 @@
 </div>
 
 <script>
-
   // Initialize datatable
   $(document).ready(function ()
   {
     $('#testsDataTable').DataTable(
         {
-          paging: <%= @tests.length > 25 ? 'true' : 'false' %>,
-          pageLength: 25,
+          paging: <%= @tests.length > 10 ? 'true' : 'false' %>,
+          pageLength: 10,
           info: false,
-          lengthMenu: [25, 50, 100, 200],
+          lengthMenu: [10, 25, 50, 100],
           columnDefs: [
-            { targets: ['resultColumn'], data: function(row, type, set, meta){
+            { targets: ['result-column'], data: function(row, type, set, meta){
               if (type === 'set')
               {
                 row.val = set;
                 row.val_display = set;
-                row.val_filter = $(set).find('.btnResult').text();
+                row.val_filter = $(set).find('.btn-result').text();
               }
               else if (type === 'display')
               {
@@ -77,9 +76,8 @@
     );
 
     // Convert all list-based dropdown to <select>-like menus
-    $(".dropdown-menu li a").click(function ()
+    $(".result-dropdown-menu li a").click(function ()
     {
-
       var button = $(this).parents('.dropdown-menu').siblings('button');
 
       $.ajax
@@ -115,8 +113,5 @@
     });
 
   });
-
-
-
 </script>
 

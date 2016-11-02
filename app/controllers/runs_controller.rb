@@ -1,10 +1,13 @@
 class RunsController < ApplicationController
 
   def index
+    @testers = Tester.all
     @runs = Run.where(suite_id: params[:suite_id])
   end
 
   def show
+    @testers = Tester.all
+
     @run = Run.find(params[:id])
 
     @tests = @run.tests
