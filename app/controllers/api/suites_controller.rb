@@ -3,16 +3,20 @@ class Api::SuitesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    offset = params[:offset] || 0
-    limit = params[:limit] || 20
-    @suites = Suite.order('id DESC').offset(offset).limit(limit)
+    @suites = Suite.all
     render json: @suites
   end
 
   def create
     input = JSON.parse(request.body.read)
     @suite = Suite.new input
-    @suite.save!
+
+    begin
+      @suite.save!
+    rescue ActiveRecord::RecordNotUnique => e
+      @suite = Suite.find_by(name: params[:name])
+    end
+
     render json: @suite
   end
 
@@ -24,8 +28,13 @@ class Api::SuitesController < ApplicationController
   end
 
   def show
-    @suite = Suite.find params[:id]
+    @suite = Suite.find(params[:id])
     render json: @suite
+  end
+
+
+  def record_not_unique
+    render plain: "Suite with that name already exists.", status: 409
   end
 
 end

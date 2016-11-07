@@ -46,6 +46,49 @@
   // Initialize datatable
   $(document).ready(function ()
   {
+    $('#testsDataTable').on( 'draw.dt', function ()
+    {
+      $(".result-dropdown-menu li a").off('click.testsdt');
+
+      // Convert all list-based dropdown to <select>-like menus
+      $(".result-dropdown-menu li a").on('click.testsdt', function ()
+      {
+        var button = $(this).parents('.dropdown-menu').siblings('button');
+
+        $.ajax
+        (
+          {
+            type: "PUT",
+            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + button.data('test-id'),
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({result_id: $(this).data('result-id')})
+          }).done(function (response)
+        {
+
+          var result_styles = []
+          <% Result.all.each do |result| %>
+          result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
+          <% end %>
+
+          button.data('result-id', response.result_id);
+          button.removeClass();
+          button.addClass("btn btn-xs btn-block dropdown-toggle");
+
+          $.each(result_styles, function(index)
+          {
+            if ($(this)[0] == response.result_id)
+            {
+              button.html($(this)[1] + ' <span class="caret"/>');
+              button.addClass($(this)[2]);
+              return false; // needs to return false in order to "break" from jQuery "each"...
+            }
+          });
+        });
+      });
+    } );
+
+
     $('#testsDataTable').DataTable(
         {
           paging: <%= @tests.length > 10 ? 'true' : 'false' %>,
@@ -74,43 +117,6 @@
           ]
         }
     );
-
-    // Convert all list-based dropdown to <select>-like menus
-    $(".result-dropdown-menu li a").click(function ()
-    {
-      var button = $(this).parents('.dropdown-menu').siblings('button');
-
-      $.ajax
-      (
-          {
-            type: "PUT",
-            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + button.data('test-id'),
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({result_id: $(this).data('result-id')})
-          }).done(function (response)
-      {
-
-        var result_styles = []
-        <% Result.all.each do |result| %>
-        result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
-        <% end %>
-
-        button.data('result-id', response.result_id);
-        button.removeClass();
-        button.addClass("btn btn-xs btn-block dropdown-toggle");
-
-        $.each(result_styles, function(index)
-        {
-          if ($(this)[0] == response.result_id)
-          {
-            button.html($(this)[1] + ' <span class="caret"/>');
-            button.addClass($(this)[2]);
-            return false; // needs to return false in order to "break" from jQuery "each"...
-          }
-        });
-      });
-    });
 
   });
 </script>

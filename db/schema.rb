@@ -12,42 +12,50 @@
 
 ActiveRecord::Schema.define(version: 20161011113222) do
 
-  create_table "results", force: :cascade do |t|
+  create_table "results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string  "name"
     t.boolean "manual",   default: false
     t.string  "category", default: "PASS"
   end
 
-  create_table "runs", force: :cascade do |t|
+  create_table "runs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
     t.integer  "tester_id",  default: 1, null: false
     t.integer  "result_id",  default: 1, null: false
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "suite_id"
-    t.index ["result_id"], name: "index_runs_on_result_id"
-    t.index ["suite_id"], name: "index_runs_on_suite_id"
-    t.index ["tester_id"], name: "index_runs_on_tester_id"
+    t.index ["result_id"], name: "index_runs_on_result_id", using: :btree
+    t.index ["suite_id"], name: "index_runs_on_suite_id", using: :btree
+    t.index ["tester_id"], name: "index_runs_on_tester_id", using: :btree
   end
 
-  create_table "suites", force: :cascade do |t|
+  create_table "suites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string "name", null: false
+    t.index ["name"], name: "index_suites_on_name", unique: true, using: :btree
+  end
+
+  create_table "testers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "name"
   end
 
-  create_table "testers", force: :cascade do |t|
-    t.string "name"
-  end
-
-  create_table "tests", force: :cascade do |t|
+  create_table "tests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "result_id",  default: 1, null: false
-    t.text     "log"
-    t.text     "notes"
+    t.integer  "result_id",                   default: 1, null: false
+    t.text     "log",           limit: 65535
+    t.text     "notes",         limit: 65535
     t.datetime "start_time"
     t.datetime "end_time"
+    t.string   "error_message"
+    t.string   "fail_message"
     t.integer  "run_id"
-    t.index ["result_id"], name: "index_tests_on_result_id"
-    t.index ["run_id"], name: "index_tests_on_run_id"
+    t.index ["result_id"], name: "index_tests_on_result_id", using: :btree
+    t.index ["run_id"], name: "index_tests_on_run_id", using: :btree
   end
 
+  add_foreign_key "runs", "results"
+  add_foreign_key "runs", "suites"
+  add_foreign_key "runs", "testers"
+  add_foreign_key "tests", "results"
+  add_foreign_key "tests", "runs"
 end
