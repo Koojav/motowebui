@@ -8,13 +8,14 @@ class Api::SuitesController < ApplicationController
   end
 
   def create
-    input = JSON.parse(request.body.read)
-    @suite = Suite.new input
 
-    begin
-      @suite.save!
-    rescue ActiveRecord::RecordNotUnique => e
-      @suite = Suite.find_by(name: params[:name])
+    # Case insensitive check for already existing TestSuite with provided name
+    @suite = Suite.find_by(name: params[:name].downcase)
+
+    # If it didn't exist - create it
+    if @suite.nil?
+      input = JSON.parse(request.body.read)
+      @suite = Suite.new input
     end
 
     render json: @suite

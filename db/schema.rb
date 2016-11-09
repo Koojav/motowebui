@@ -43,11 +43,12 @@ ActiveRecord::Schema.define(version: 20161011113222) do
     t.string   "name"
     t.integer  "result_id",                   default: 1, null: false
     t.text     "log",           limit: 65535
-    t.text     "notes",         limit: 65535
     t.datetime "start_time"
     t.datetime "end_time"
     t.string   "error_message"
     t.string   "fail_message"
+    t.string   "ticket_url"
+    t.string   "tags"
     t.integer  "run_id"
     t.index ["result_id"], name: "index_tests_on_result_id", using: :btree
     t.index ["run_id"], name: "index_tests_on_run_id", using: :btree

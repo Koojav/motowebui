@@ -6,13 +6,13 @@ default: &default
   password: 123
   port: 3306
   pool: 5
-  database: motowebui
 
 
 
 development:
   <<: *default
   host: docker.demo
+  database: motowebui
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -20,7 +20,9 @@ development:
 test:
   <<: *default
   host: docker.demo
+  database: motowebui
 
 production:
   <<: *default
   host: docker.demo
+  database: motowebui
