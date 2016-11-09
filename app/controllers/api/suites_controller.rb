@@ -8,7 +8,6 @@ class Api::SuitesController < ApplicationController
   end
 
   def create
-
     # Case insensitive check for already existing TestSuite with provided name
     @suite = Suite.find_by(name: params[:name].downcase)
 
@@ -31,11 +30,6 @@ class Api::SuitesController < ApplicationController
   def show
     @suite = Suite.find(params[:id])
     render json: @suite
-  end
-
-
-  def record_not_unique
-    render plain: "Suite with that name already exists.", status: 409
   end
 
 end

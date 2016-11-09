@@ -15,12 +15,16 @@ class Api::RunsController < ApplicationController
 
     # If it does - remove it so only the most recent instance of Run results' is being kept in the db
     if @run
+      # Store run's ID so once it's created anew with new set of tests URLs
+      # will still point to the same Test Run, just with different content
+      stored_id = @run.id
       @run.destroy
     end
 
     # Create new Run with data provided in input
     @run = Run.new input
     @run.suite = Suite.find params[:suite_id]
+    @run.id = stored_id
     @run.save!
     render json: @run
   end
