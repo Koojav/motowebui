@@ -20,11 +20,12 @@ ActiveRecord::Schema.define(version: 20161011113222) do
 
   create_table "runs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "tester_id",  default: 1, null: false
-    t.integer  "result_id",  default: 1, null: false
+    t.integer  "tester_id",    default: 1,     null: false
+    t.integer  "result_id",    default: 1,     null: false
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "suite_id"
+    t.boolean  "result_dirty", default: false
     t.index ["result_id"], name: "index_runs_on_result_id", using: :btree
     t.index ["suite_id"], name: "index_runs_on_suite_id", using: :btree
     t.index ["tester_id"], name: "index_runs_on_tester_id", using: :btree

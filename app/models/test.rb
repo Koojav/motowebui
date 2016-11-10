@@ -2,7 +2,7 @@ class Test < ApplicationRecord
   belongs_to :run
   belongs_to :result
 
-  after_commit :evaluate_run_result
+  after_commit :mark_run_as_dirty
 
   def display_duration
     begin
@@ -26,24 +26,9 @@ class Test < ApplicationRecord
     end
   end
 
-  # Evaluates run.result based on run.tests.categories
-  # TODO: Make it a delayed job
-  def evaluate_run_result
-    categories = run.tests.select('results.category').joins(:result).group('results.category').pluck('category')
-
-    if categories.include? 'RUNNING'
-      run.result = Result.find(1)
-    elsif categories.include? 'ERROR'
-      run.result = Result.find(4)
-    elsif categories.include? 'FAIL'
-      run.result = Result.find(3)
-    elsif categories.include? 'SKIP'
-      run.result = Result.find(5)
-    else
-      run.result = Result.find(2)
-    end
-    run.save!
+  def mark_run_as_dirty
+    sql = "UPDATE runs SET result_dirty=1 WHERE runs.id=#{self.run_id};"
+    ActiveRecord::Base.connection.execute(sql)
   end
-  private :evaluate_run_result
 
 end

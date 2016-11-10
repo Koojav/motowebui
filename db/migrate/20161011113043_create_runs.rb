@@ -1,4 +1,5 @@
 class CreateRuns < ActiveRecord::Migration[5.0]
+
   def change
     create_table :runs do |t|
       t.string      :name
@@ -7,6 +8,7 @@ class CreateRuns < ActiveRecord::Migration[5.0]
       t.datetime    :start_time
       t.datetime    :end_time
       t.references  :suite, foreign_key: true
+      t.boolean     :result_dirty, default: false
     end
   end
 end
