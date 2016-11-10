@@ -1,6 +1,6 @@
 class Result < ApplicationRecord
-  has_many :test
-  has_many :result
+  has_many    :tests
+  has_many    :results
 
   def display_style_btn
     case self.category
@@ -20,9 +20,4 @@ class Result < ApplicationRecord
 
     result_style
   end
-
-  def display_result_stats
-
-  end
-
 end

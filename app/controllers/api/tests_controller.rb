@@ -3,9 +3,7 @@ class Api::TestsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    offset = params[:offset] || 0
-    limit = params[:limit] || 20
-    @tests = Test.order('id DESC').offset(offset).limit(limit)
+    @tests = Test.where(run_id: params[:run_id])
     render json: @tests
   end
 

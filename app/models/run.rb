@@ -1,7 +1,7 @@
 class Run < ApplicationRecord
   belongs_to :suite
   belongs_to :result
-  has_many :tests, dependent: :destroy
+  has_many   :tests, dependent: :destroy
 
   def display_duration
     begin
