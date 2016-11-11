@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20161011113222) do
     t.integer  "tester_id",    default: 1,     null: false
     t.integer  "result_id",    default: 1,     null: false
     t.datetime "start_time"
-    t.datetime "end_time"
+    t.integer  "duration",     default: 0
     t.integer  "suite_id"
     t.boolean  "result_dirty", default: false
     t.index ["result_id"], name: "index_runs_on_result_id", using: :btree
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20161011113222) do
     t.integer  "result_id",                   default: 1, null: false
     t.text     "log",           limit: 65535
     t.datetime "start_time"
-    t.datetime "end_time"
+    t.integer  "duration",                    default: 0
     t.string   "error_message"
     t.string   "fail_message"
     t.string   "ticket_url"

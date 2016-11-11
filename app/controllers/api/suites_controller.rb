@@ -15,6 +15,7 @@ class Api::SuitesController < ApplicationController
     if @suite.nil?
       input = JSON.parse(request.body.read)
       @suite = Suite.new input
+      @suite.save!
     end
 
     render json: @suite

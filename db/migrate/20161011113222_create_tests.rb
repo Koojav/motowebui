@@ -5,7 +5,7 @@ class CreateTests < ActiveRecord::Migration[5.0]
       t.references  :result, foreign_key: true, null: false, default: 1
       t.text        :log
       t.datetime    :start_time
-      t.datetime    :end_time
+      t.integer     :duration, default: 0
       t.string      :error_message
       t.string      :fail_message
       t.string      :ticket_url

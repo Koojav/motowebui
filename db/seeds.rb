@@ -22,15 +22,15 @@ Tester.create(id: 3, name: 'Hot Potato')
 
 Suite.create(id: 1, name: 'Test Suite #1')
 
-Run.create(id: 1, name: 'Test Run #1', suite_id: '1', start_time: Time.now - rand(99999), end_time: Time.now)
-Run.create(id: 2, name: 'Test Run #2', suite_id: '1', start_time: Time.now - rand(99999), end_time: Time.now)
+Run.create(id: 1, name: 'Test Run #1', suite_id: '1', start_time: Time.now - rand(99999), duration: rand(9999))
+Run.create(id: 2, name: 'Test Run #2', suite_id: '1', start_time: Time.now - rand(99999), duration: rand(9999))
 
 # Create tests in Run #1
 (1..3).each do |i|
-  Test.create(name: "Test1_#{i}", run_id: '1', result_id: rand(4)+1, start_time: Time.now - rand(99999), end_time: Time.now)
+  Test.create(name: "Test1_#{i}", run_id: '1', result_id: rand(4)+1, start_time: Time.now - rand(99999), duration: rand(9999))
 end
 
 # Create tests in Run #2
 (1..50).each do |i|
-  Test.create(name: "Test2_#{i}", run_id: '2', result_id: rand(4)+1, start_time: Time.now - rand(99999), end_time: Time.now)
+  Test.create(name: "Test2_#{i}", run_id: '2', result_id: rand(4)+1, start_time: Time.now - rand(99999), duration: rand(9999))
 end
