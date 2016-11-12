@@ -3,7 +3,6 @@ class CreateTests < ActiveRecord::Migration[5.0]
     create_table :tests do |t|
       t.string      :name
       t.references  :result, foreign_key: true, null: false, default: 1
-      t.text        :log
       t.datetime    :start_time
       t.integer     :duration, default: 0
       t.string      :error_message

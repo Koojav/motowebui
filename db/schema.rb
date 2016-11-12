@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161011113222) do
+ActiveRecord::Schema.define(version: 20161111114000) do
+
+  create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.text    "text",    limit: 65535
+    t.integer "test_id"
+    t.index ["test_id"], name: "index_logs_on_test_id", using: :btree
+  end
 
   create_table "results", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string  "name"
@@ -42,10 +48,9 @@ ActiveRecord::Schema.define(version: 20161011113222) do
 
   create_table "tests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "result_id",                   default: 1, null: false
-    t.text     "log",           limit: 65535
+    t.integer  "result_id",     default: 1, null: false
     t.datetime "start_time"
-    t.integer  "duration",                    default: 0
+    t.integer  "duration",      default: 0
     t.string   "error_message"
     t.string   "fail_message"
     t.string   "ticket_url"
@@ -55,6 +60,7 @@ ActiveRecord::Schema.define(version: 20161011113222) do
     t.index ["run_id"], name: "index_tests_on_run_id", using: :btree
   end
 
+  add_foreign_key "logs", "tests"
   add_foreign_key "runs", "results"
   add_foreign_key "runs", "suites"
   add_foreign_key "runs", "testers"

@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     resources :suites,      controller: :suites,  defaults: {format: :json} do
       resources :runs,      controller: :runs,    defaults: {format: :json} do
         get 'evaluate_result', to: :evaluate_result
-        resources :tests,   controller: :tests,   defaults: {format: :json}
+        resources :tests,   controller: :tests,   defaults: {format: :json} do
+          resources :logs, controller:  :logs, defaults: {format: :json}, only: [:create, :index]
+        end
       end
     end
   end
