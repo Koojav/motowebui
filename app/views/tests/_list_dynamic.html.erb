@@ -1,0 +1,51 @@
+<div class="box box-default">
+  <div class="box-body">
+    <table id="testsDataTable" class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th class="col-xs-6">Name</th>
+        <th class="col-xs-2">Start time</th>
+        <th class="col-xs-2">Duration</th>
+        <th class="result-column">Result</th>
+      </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Renderer for "Name" column - convert test's name to a clickable link
+  function renderColumnName(data)
+  {
+    return "<button>"+data+"</button>"
+  }
+
+  // Renderer for "Name" column - convert test's name to a clickable link
+  function renderColumnStartTime(data)
+  {
+    return data
+  }
+
+  // Renderer for "Result" column - convert test's result to a button
+  // with dropdown to allow for manual change of test's result
+  function renderColumnResult(data)
+  {
+    return data
+  }
+
+  $(document).ready(function() {
+    $('#testsDataTable').DataTable( {
+      "columnDefs": [
+        { "name": "name",       "targets": 0, "render": renderColumnName },
+        { "name": "start_time", "targets": 1, "render": renderColumnStartTime },
+        { "name": "duration",   "targets": 2 },
+        { "name": "result_id",  "targets": 3, "render": renderColumnResult }
+      ],
+      "processing": true,
+      "serverSide": true,
+      "ajax": "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests?datatable=1"
+    });
+  });
+
+</script>
+
