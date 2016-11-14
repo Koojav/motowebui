@@ -94,6 +94,7 @@ Input and output format for all calls is JSON.
 * duration `Integer` _(optional)_ - Duration of test, in seconds.
 * tester_id `Integer` _(optional)_ - ID of a Tester to be assigned to this Test Run. Default: 1 ('Not assigned')
 * result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this run. Default: 1 ('Running')
+
 **Returns:** Creates Test Run and returns it. If there already was an existing Run, in scope of SUITE_ID, with the same name it will be destroyed first.
 
 ---
