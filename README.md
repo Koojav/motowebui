@@ -75,7 +75,7 @@ Input and output format for all calls is JSON.
 **Payload:** None  
 **Returns:** Test Suite with provided ID, which has just been deleted. Removal of Test Runs, Tests and Logs aggregated by this Test Suite will be automatically chained and executed.
 
-
+  
 ## Test Runs
 `[GET] {base_url}/api/suites/SUITE_ID/runs`  
 **Payload:** None  
@@ -112,7 +112,7 @@ Input and output format for all calls is JSON.
 **Payload:** None  
 **Returns:** Test Run with provided ID, which has just been deleted. Removal of Tests and Logs aggregated by this Test Run will be automatically chained and executed.  
 
-
+  
 ## Tests
 `[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`  
 **Payload:** None  
@@ -152,7 +152,7 @@ Input and output format for all calls is JSON.
 **Payload:** None  
 **Returns:** Test with provided ID, which has just been deleted. Removal of Log assigned to this Test will be automatically chained and executed.  
 
-
+  
 ## Logs
 `[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
 **Payload:** None  
@@ -178,9 +178,10 @@ Input and output format for all calls is JSON.
 **Payload:** None  
 **Returns:** Deletes Log from specified test. Returns its content before deletion. 
 
+  
 ## Testers
 
-
+  
 ## Results
 
 
