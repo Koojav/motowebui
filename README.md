@@ -1,11 +1,10 @@
 # Overview
 MotoWebUI aggregates and displays results of tests while allowing for filtering, sorting and manual manipulation of the stored data.  
-Interface can display any data that fulfills structural requirements but it's developed mainly as a companion app for [Moto Framework](https://github.com/bwilczek/moto) testing engine.  
-For more information on `Data structure` and `REST API` please consult appropriate sections of this document.
+Interface can display any data that fulfills structural requirements but it's developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine.  
 
 
 # Deployment and setup
-TODO TODO TODO TODO TODO
+TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 
 
 # Usage
@@ -26,10 +25,11 @@ Project's structure is composed out of following data structures:
 * Logs
 
 Test Suite groups Test Runs, which in turn group Tests.  
-Test Runs can have responsible Tester assigned to them.  
-Tests can have Logs.   
+Test Runs can have responsible Testers assigned to them.  
+Tests can have Logs.  
+Test Runs and Tests have Results.
  
-For example:  
+**Example**:  
 Test Suite "Regression 16.20" groups various Test Runs "Public API", "REST API", "Web UI", which in turn consist of multiple Tests. 
 
 
@@ -57,7 +57,9 @@ Input and output format for all calls is JSON.
  
 `[POST] {base_url}/api/suites`  
 **Payload:** 
--name `String` - Test Suite's name  
+
+* name `String` - Test Suite's name  
+
 **Returns:** Created Test Suite or existing one if provided name matched, case insensitively, with a name of previously created suite.  
 
 ---
