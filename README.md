@@ -49,38 +49,44 @@ Input and output format for all calls is JSON.
 
 
 ## Test Suites 
-`[GET] {base_url}/api/suites`
+`[GET] {base_url}/api/suites`  
 **Payload:** None  
 **Returns:** List of all Test Suites.   
 
-`[POST] {base_url}/api/suites`
+---
+ 
+`[POST] {base_url}/api/suites`  
 **Payload:** 
 -name `String` - Test Suite's name  
 **Returns:** Created Test Suite or existing one if provided name matched, case insensitively, with a name of previously created suite.  
 
 ---
 
-`[GET] {base_url}/api/suites/SUITE_ID`
+`[GET] {base_url}/api/suites/SUITE_ID`  
 **Payload:** None  
 **Returns:** Test Suite with provided ID.
 
 ---
 
-`[DELETE] {base_url}/api/suites/SUITE_ID`
+`[DELETE] {base_url}/api/suites/SUITE_ID`  
 **Payload:** None  
 **Returns:** Test Suite with provided ID, which has just been deleted. Removal of Test Runs, Tests and Logs aggregated by this Test Suite will be automatically chained and executed.
 
 
 ## Test Runs
-`[GET] {base_url}/api/suites/SUITE_ID/runs`
+`[GET] {base_url}/api/suites/SUITE_ID/runs`  
 **Payload:** None  
 **Returns:** List of all Test Runs that belong to a specified Test Suite.
 
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID`
+---
+ 
+`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID`  
 **Payload:** None  
 **Returns:** Test Run
-  
-`[POST] {base_url}/api/suites/SUITE_ID/runs`
+
+---
+ 
+`[POST] {base_url}/api/suites/SUITE_ID/runs`  
 **Payload:** 
 
 * name `String` - Test Run's name
@@ -90,25 +96,33 @@ Input and output format for all calls is JSON.
 * result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this run. Default: 1 ('Running')
 **Returns:** Creates Test Run and returns it. If there already was an existing Run, in scope of SUITE_ID, with the same name it will be destroyed first.
 
-`[PUT] {base_url}/api/suites/SUITE_ID/runs`
+---
+ 
+`[PUT] {base_url}/api/suites/SUITE_ID/runs`  
 **Payload:** Same as with `POST` to this endpoint  
 **Returns:** Modified Test Run.
 
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs`
+---
+ 
+`[DELETE] {base_url}/api/suites/SUITE_ID/runs`  
 **Payload:** None  
 **Returns:** Test Run with provided ID, which has just been deleted. Removal of Tests and Logs aggregated by this Test Run will be automatically chained and executed.  
 
 
 ## Tests
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`
+`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`  
 **Payload:** None  
 **Returns:** List of all Test that belong to a specified Test Run.  
 
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`
+---
+ 
+`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`  
 **Payload:** None  
 **Returns:** Test  
 
-`[POST] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`
+---
+ 
+`[POST] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`  
 **Payload:** 
 
 * name `String` - Test's name
@@ -122,31 +136,41 @@ Input and output format for all calls is JSON.
 
 **Returns:** Creates Test and returns it.
 
-`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`
+---
+ 
+`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`  
 **Payload:** Same as with `POST` to this endpoint.  
 **Returns:** Modified Test.
 
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`
+---
+ 
+`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`  
 **Payload:** None  
 **Returns:** Test with provided ID, which has just been deleted. Removal of Log assigned to this Test will be automatically chained and executed.  
 
 
 ## Logs
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`
+`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
 **Payload:** None  
 **Returns:** Test's Log.
 
-`[POST] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`
+---
+ 
+`[POST] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
 **Payload:** 
 
 * text `String` - Log's text
 **Returns:** Creates new Log, assigns it to Test and returns that Log.
 
-`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`
+---
+ 
+`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
 **Payload:** Same as with `POST` to this endpoint.  
 **Returns:** Modified Log.
 
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`
+---
+ 
+`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
 **Payload:** None  
 **Returns:** Deletes Log from specified test. Returns its content before deletion. 
 
