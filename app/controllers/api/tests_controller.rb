@@ -9,7 +9,7 @@ class Api::TestsController < ApplicationController
     #   tests[:draw] = params[:draw]
     #   total = Test.where(run_id: params[:run_id]).count(:id)
     #   tests[:recordsTotal]    = total
-    #   tests[:recordsFiltered] = total # TODO
+    #   tests[:recordsFiltered] = total
     #   tests[:data] = []
     #
     #   order_hash = {column:params[:order]['0']['column'], dir:params[:order]['0']['dir']}
@@ -21,29 +21,32 @@ class Api::TestsController < ApplicationController
     #   end
     #   render json: tests
     # else
-      tests = Test.where(run_id: params[:run_id])
-      render json: tests
+      render json: Test.where(run_id: params[:run_id])
     # end
-
   end
 
   def create
     input = JSON.parse(request.body.read)
-    @test = Test.new input
-    @test.run = Run.find params[:run_id]
-    @test.save!
-    render json: @test
+    test = Test.new input
+    test.run = Run.find params[:run_id]
+    test.save!
+    render json: test
   end
 
   def update
-    @test = Test.find params[:id]
+    test = Test.find(params[:id])
     input = JSON.parse(request.body.read)
-    @test.update input
-    render json: @test
+    test.update(input)
+    render json: test
   end
 
   def show
-    @test = Test.find params[:id]
-    render json: @test
+    render json: Test.find(params[:id])
   end
+
+  def destroy
+    test = Test.find(params[:id])
+    render json: test.destroy
+  end
+
 end

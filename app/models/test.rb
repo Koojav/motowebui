@@ -27,6 +27,7 @@ class Test < ApplicationRecord
   end
 
   def mark_run_as_dirty
+    # Invoked via pure SQL, not via ORM, in order to avoid triggering callbacks in Run
     sql = "UPDATE runs SET result_dirty=1 WHERE runs.id=#{self.run_id};"
     ActiveRecord::Base.connection.execute(sql)
   end
