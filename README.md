@@ -1,7 +1,7 @@
 # 1. Overview
 MotoWebUI is a web interface for aggregation, display and manual manipulation of results of tests.  
 It's developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine but can be used to display, filter and sort any data that fulfills structural requirements.  
-`Data structure and functionality` section contains **TL;DR** description of how things are built and work together. 
+`Data structure and functionality` section contains **TL;DR** description of how things are built and work together.  
 
 
 # 2. Deployment and setup
