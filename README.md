@@ -1,14 +1,14 @@
-# Overview
+# 1. Overview
 MotoWebUI is a web interface for aggregation, display and manual manipulation of results of tests.  
-  
-It's developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine but can be used to display, filter and sort any data that fulfills structural requirements.
+It's developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine but can be used to display, filter and sort any data that fulfills structural requirements.  
+`Data structure and functionality` section contains **TL;DR** description of how things are built and work together. 
 
 
-# Deployment and setup
+# 2. Deployment and setup
 TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 
 
-# Dependencies
+# 3. Dependencies
 List of dependencies has an informative character.  
 There is no need to install any external components manually. All will be taken care of by `gem` and `docker`.  
 In case of deploying the app without `docker` database will have to be set separately.
@@ -22,41 +22,59 @@ In case of deploying the app without `docker` database will have to be set separ
 * MySQL
 
 
-# Usage
-TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+# 4. Usage
+TODO TODO TODO TODO TODO TODO TODO TODO TODO
 
 * Deploy
 * Provide data, via REST API, to be displayed. First create Test Suite, then assign Test Run to it. Afterwards create Tests in that Test Run. 
 For technical details please consult `REST API` section.
 * Access results via {your_url}:PORT (3000 by default)
 
-TODO TODO TODO : WEBSITE SECTIONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (suites, runs, tests, log)
+TODO TODO TODO TODO TODO TODO TODO TODO TODO : WEBSITE SECTIONS (suites, runs, tests, log)
 
 
-# Data structure
-Project is composed out of following data structures:
+# 5. Data structure and functionality
+Project is composed out of a few data structures that stay in close relation with each other.  
 
-TODO TODO TODO : LIST FIELDS IN OBJECTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+TL;DR:
+
+    Test Suites group Test Runs, which in turn group Tests.  
+    Test Runs can have responsible Testers assigned to them.  
+    Tests can have Logs.  
+    Test Runs and Tests have Results.    
+
+TODO TODO TODO TODO TODO TODO TODO TODO TODO : LIST AND DESCRIBE FIELDS IN OBJECTS
 
 * Test Suites
+    * name
 * Test Runs
+    * name
+    * start_time
+    * duration
+    * result_id
+    * suite_id
+    * tester_id
 * Tests
 * Results
 * Testers
 * Logs
 
-Test Suite groups Test Runs, which in turn group Tests.  
-Test Runs can have responsible Testers assigned to them.  
-Tests can have Logs.  
-Test Runs and Tests have Results.  
+
 
 **Example**:  
-Test Suite "Regression 16.20" groups various Test Runs "Public API", "REST API", "Web UI", which in turn consist of multiple Tests.  
+
+* Test Suite "Regression 16.20" 
+    * Test Run "Public API"
+        * Tests 1..N
+    * Test Run "REST API"
+        * Tests 1..N
+    * Test Run "Web UI"
+        * Tests 1..N
  
-TODO TODO TODO TODO **Results + Categories explanation**
+TODO TODO TODO TODO TODO TODO TODO TODO TODO : **Results + Categories explanation**
 
 
-# REST API
+# 6. REST API
 All data that is required to describe appropriate test sets can be created, modified and deleted via REST API.  
 Below is a reference list of all endpoints available in the API.  
 Input and output format for all calls is JSON.  
