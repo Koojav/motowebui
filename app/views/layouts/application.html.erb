@@ -1,3 +1,5 @@
+<% require './app/version' %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -28,7 +30,7 @@
       <div class="container">
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content no-padding" style="margin-top: 20px" >
 
           <%= yield %>
 
@@ -41,7 +43,7 @@
     <footer class="main-footer">
       <div class="container">
         <div class="pull-right hidden-xs">
-          <b>Version</b> 0.8
+          <b>Version</b> <%= MOTOWEBUI_VERSION %>
         </div>
         <strong>MotoWebUI</strong>   <a href="https://github.com/bwilczek/moto">Moto Framework</a> result display project.
 

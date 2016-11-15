@@ -1,4 +1,4 @@
-class Api::TestsController < ApplicationController
+class Api::TestersController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 

@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20161111114000) do
 
   create_table "runs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "tester_id",    default: 1,     null: false
-    t.integer  "result_id",    default: 1,     null: false
+    t.integer  "tester_id",    default: 1
+    t.integer  "result_id",    default: 1
     t.datetime "start_time"
     t.integer  "duration",     default: 0
     t.integer  "suite_id"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20161111114000) do
 
   create_table "testers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string "name"
+    t.index ["name"], name: "index_testers_on_name", unique: true, using: :btree
   end
 
   create_table "tests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|

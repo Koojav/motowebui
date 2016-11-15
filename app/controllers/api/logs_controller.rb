@@ -2,7 +2,7 @@ class Api::LogsController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
-  def index
+  def show
     render json: Log.find_by(test_id: params[:test_id])
   end
 

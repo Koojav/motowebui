@@ -2,7 +2,8 @@ class RunsController < ApplicationController
 
   def index
     @testers = Tester.all
-    @runs = Run.where(suite_id: params[:suite_id])
+    @suite = Suite.find(params[:suite_id])
+    @runs = @suite.runs
   end
 
   def show

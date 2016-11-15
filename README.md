@@ -8,15 +8,35 @@ It's developed mainly as a companion app for **[Moto Framework](https://github.c
 TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
 
 
+# Dependencies
+List of dependencies has an informative character.  
+There is no need to install any external components manually. All will be taken care of by `gem` and `docker`.  
+In case of deploying the app without `docker` database will have to be set separately.
+
+**Used technologies:**
+
+* Ruby on Rails 5
+* Bootstrap3
+* Chart.js
+* DataTables
+* MySQL
+
+
 # Usage
+TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+
 * Deploy
 * Provide data, via REST API, to be displayed. First create Test Suite, then assign Test Run to it. Afterwards create Tests in that Test Run. 
 For technical details please consult `REST API` section.
 * Access results via {your_url}:PORT (3000 by default)
 
+TODO TODO TODO : WEBSITE SECTIONS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (suites, runs, tests, log)
+
 
 # Data structure
-Project's structure is composed out of following data structures:
+Project is composed out of following data structures:
+
+TODO TODO TODO : LIST FIELDS IN OBJECTS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 * Test Suites
 * Test Runs
@@ -28,23 +48,17 @@ Project's structure is composed out of following data structures:
 Test Suite groups Test Runs, which in turn group Tests.  
 Test Runs can have responsible Testers assigned to them.  
 Tests can have Logs.  
-Test Runs and Tests have Results.
- 
+Test Runs and Tests have Results.  
+
 **Example**:  
-Test Suite "Regression 16.20" groups various Test Runs "Public API", "REST API", "Web UI", which in turn consist of multiple Tests. 
-
-
-# Dependencies
-* Rails
-* Bootstrap3
-* Chart.js
-* DataTables
-* MySQL (docker container)
+Test Suite "Regression 16.20" groups various Test Runs "Public API", "REST API", "Web UI", which in turn consist of multiple Tests.  
+ 
+TODO TODO TODO TODO **Results + Categories explanation**
 
 
 # REST API
 All data that is required to describe appropriate test sets can be created, modified and deleted via REST API.  
-Below there is a reference list of all endpoints available in the API.  
+Below is a reference list of all endpoints available in the API.  
 Input and output format for all calls is JSON.  
 {base_url} is the domain, on which MotoWebUI is deployed, followed by a port (3000 by default).  
 
@@ -176,12 +190,76 @@ Input and output format for all calls is JSON.
  
 `[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
 **Payload:** None  
-**Returns:** Deletes Log from specified test. Returns its content before deletion. 
+**Returns:** Deletes Log from specified Test. Returns its content before deletion. 
 
   
 ## Testers
+`[GET] {base_url}/api/testers`  
+**Payload:** None  
+**Returns:** List of all Testers.  
 
-  
+---
+ 
+`[GET] {base_url}/api/testers/TESTER_ID`  
+**Payload:** None  
+**Returns:** Tester with specified ID.
+
+---
+ 
+`[POST] {base_url}/api/testers`  
+**Payload:** 
+
+* name `String` - Tester's name
+**Returns:** Newly created Tester.
+
+---
+
+`[PUT] {base_url}/api/testers/TESTER_ID`  
+**Payload:** Same as with `POST` to this endpoint.  
+**Returns:** Modified Tester.
+
+---
+
+`[DELETE] {base_url}/api/testers/TESTER_ID`  
+**Payload:** None  
+**Returns:** Retrieves Tester that's being deleted.
+
+
 ## Results
+**Important:** Do not modify `Results` unless you're 100% sure you know what you're doing.  
+For more information please consult the `Data structure` section.  
+
+`[GET] {base_url}/api/results`  
+**Payload:** None  
+**Returns:** List of all possible Results. 
+
+---
+
+`[GET] {base_url}/api/results/RESULT_ID`  
+**Payload:** None  
+**Returns:** Info about specified Result.
+
+---
+
+`[POST] {base_url}/api/results`  
+**Payload:** 
+
+* name `String` - Tester's name
+* manual `Boolean` - Is Result to be set manually (available in dropdowns in UI) or only automatically via API?
+* category `String` - Result's category, categories are the basis for calculating stats (charts etc., group results etc)
+
+**Returns:** Newly created Result.
+ 
+---
+
+`[PUT] {base_url}/api/results/RESULT_ID`  
+**Payload:** Same as with `POST` to this endpoint.  
+**Returns:** Modified Result.
+
+---
+
+`[DELETE] {base_url}/api/results/RESULT_ID`  
+**Payload:** None  
+**Returns:** Retrieves Result which is being deleted.
 
 
