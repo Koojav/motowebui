@@ -10,6 +10,8 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 * `git clone git@github.com:Koojav/motowebui.git motowebui`
 * `cd motowebui`
 * `docker-compose up -d` (automatically deployed as production, see `Configuration` section)  
+<p> </p>
+**Important note:** When deploying using `docker-compose` no additional configuration is required, everything works out of the box.
 
 ## 2.2 Manually
 
@@ -31,7 +33,7 @@ TODO TODO TODO TODO TODO TODO TODO TODO
 
 
 # 3. Configuration
-In overall:
+**In overall:**
 - when deploying manually **MotoWebUI** and it's properties are configured in the same manner as every Ruby on Rails app.  
 * when deploying via `docker-compose` above is still relevant plus three files related to `docker`:
     * `docker-compose.yml` - defines relations and environment variables for docker containers (motowebui, motowebui_db)
