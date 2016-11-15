@@ -5,7 +5,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - SECRET_KEY_BASE=d583fde023dacffb08d3506f3d0ea614c219e1945d7c9e2b6967854336803b3890def82f014db532d68c446c3c48e1982c33ea34527bb8290a0e99ba09faf011
+      - SECRET_KEY_BASE=change_value_of_this_key_as_soon_as_you_realize_its_here_and_doesnt_look_safe
       - RAILS_SERVE_STATIC_FILES=1
     depends_on:
       - motowebui_db

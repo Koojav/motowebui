@@ -1,6 +1,6 @@
 # 1. Overview
 MotoWebUI is a Ruby on Rails based web interface for aggregation, display and manual manipulation of results of tests.  
-It's developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine but can be used to display, filter and sort any data that fulfills structural requirements.  
+Developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine but can be used to display, filter and sort any data that fulfills structural requirements.  
 Section `Data structure and functionality` contains **TL;DR** description of how things are built and work together.  
 
 
@@ -17,12 +17,13 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 * Install Ruby 2.3 with devkit
 * Install Bundler
 * Install required Gems using Bundler
-* Install MySQL/PostgreSQL server (latter one requires small changes in Rails connectors)
+* Install & run MySQL/PostgreSQL server (latter one requires small changes in Rails connectors)
 * Configure database connection (please see `Configuration` section)
 * `cd motowebui/bin`
 * `rails assets:precompile`
 * `rails db:migrate`
 * `rails db:seed`
+* Review `config/secrets.yml` in order to set appropriate secret key for production environment.
 * `rails server -b 0.0.0.0 -e production`
 
 ## 2.3 (Optional) Verifying deployment correctness
@@ -30,22 +31,22 @@ TODO TODO TODO TODO TODO TODO TODO TODO
 
 
 # 3. Configuration
-There are no custom points of configuration in **MotoWebUI**, only ones specific to any Rails or dockerized applications.  
+In overall:
+- when deploying manually **MotoWebUI** and it's properties are configured in the same manner as every Ruby on Rails app.  
+* when deploying via `docker-compose` above is still relevant plus three files related to `docker`:
+    * `docker-compose.yml` - defines relations and environment variables for docker containers (motowebui, motowebui_db)
+    * `Dockerfile` - describes what should be installed in `motowebui` container
+    * `entrypoint.sh` - fires up when dockers are up and checks if further app initialization is possible
 
+### 3.1 Rails
+* Database host, name, login credentials and type (MySQL, PostgreSQL) can be defined in `config/database.yml`  
+* When changing database type to PostgreSQL appropriate `gem` is required in `Gemfile`  
+* **Untested:** Use of SQLite might be possible with Rails server set to 1 thread (default: 5). 
+* Review `config/database.yml` in order to understand how secret keys work for each possible environment.
 
-
-# 3. Dependencies
-List of dependencies has an informative character.  
-There is no need to install any external components manually. All will be taken care of by `gem` and `docker`.  
-In case of deploying the app without `docker` database will have to be set separately.
-
-**Used technologies:**
-
-* Ruby on Rails 5
-* Bootstrap3
-* Chart.js
-* DataTables
-* MySQL
+### 3.2 Docker / docker-compose
+* When deploying app using `docker-compose` database properties, such as login and password, are set in `docker-compose.yml`
+* So is secret key for production.
 
 
 # 4. Usage
@@ -304,6 +305,16 @@ For more information please consult the `Data structure` section.
 
 `[DELETE] {base_url}/api/results/RESULT_ID`  
 **Payload:** None  
-**Returns:** Retrieves Result which is being deleted.
+**Returns:** Retrieves Result which is being deleted.  
+
+
+# 7. Technologies used
+List of dependencies has an informative character, when deploying **MotoWebUI** using `docker-compose` everything will be installed automatically.  
+
+* Ruby on Rails 5
+* Bootstrap3
+* Chart.js
+* DataTables
+* MySQL
 
 
