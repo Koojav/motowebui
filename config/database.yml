@@ -1,12 +1,10 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  database:
   username: root
-  password: 123
+  password: root_password
   port: 3306
   pool: 5
-
 
 
 development:
@@ -14,15 +12,12 @@ development:
   host: docker.demo
   database: motowebui
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   <<: *default
-  host: docker.demo
+  host: motowebui_db
   database: motowebui
 
 production:
   <<: *default
-  host: docker.demo
+  host: motowebui_db
   database: motowebui

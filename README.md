@@ -1,11 +1,37 @@
 # 1. Overview
-MotoWebUI is a web interface for aggregation, display and manual manipulation of results of tests.  
+MotoWebUI is a Ruby on Rails based web interface for aggregation, display and manual manipulation of results of tests.  
 It's developed mainly as a companion app for **[Moto Framework](https://github.com/bwilczek/moto)** testing engine but can be used to display, filter and sort any data that fulfills structural requirements.  
 Section `Data structure and functionality` contains **TL;DR** description of how things are built and work together.  
 
 
-# 2. Deployment and setup
-TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO
+# 2. Deployment
+## 2.1 Using `docker` and `docker-compose`
+
+* `git clone git@github.com:Koojav/motowebui.git motowebui`
+* `cd motowebui`
+* `docker-compose up -d` (automatically deployed as production, see `Configuration` section)  
+
+## 2.2 Manually
+
+* `git clone git@github.com:Koojav/motowebui.git motowebui`
+* Install Ruby 2.3 with devkit
+* Install Bundler
+* Install required Gems using Bundler
+* Install MySQL/PostgreSQL server (latter one requires small changes in Rails connectors)
+* Configure database connection (please see `Configuration` section)
+* `cd motowebui/bin`
+* `rails assets:precompile`
+* `rails db:migrate`
+* `rails db:seed`
+* `rails server -b 0.0.0.0 -e production`
+
+## 2.3 (Optional) Verifying deployment correctness
+TODO TODO TODO TODO TODO TODO TODO TODO
+
+
+# 3. Configuration
+There are no custom points of configuration in **MotoWebUI**, only ones specific to any Rails or dockerized applications.  
+
 
 
 # 3. Dependencies
