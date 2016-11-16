@@ -22,7 +22,6 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 * Install required Gems using Bundler
 * Install & run MySQL/PostgreSQL server (latter one requires small changes in Rails connectors)
 * Set environment variables.
-* 
 * `cd motowebui/bin`
 * `rails assets:precompile`
 * `rails db:migrate`
