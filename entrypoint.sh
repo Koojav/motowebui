@@ -10,4 +10,4 @@ done
 rails assets:precompile
 rails db:migrate
 rails db:seed
-rails server -b 0.0.0.0 -e production
+rails server -b 0.0.0.0
