@@ -11,7 +11,7 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 * `cd motowebui`
 * `docker-compose up -d` (automatically deployed as production, see `Configuration` section)  
 <p> </p>
-**Important note:** When deploying using `docker-compose` no additional configuration is required, everything works out of the box.
+**Important note:** When deploying this way no additional configuration is required, everything works right out of the box.
 
 ## 2.2 Manually
 
