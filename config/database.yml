@@ -1,23 +1,20 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  username: root
-  password: root_password
+  username: <%= ENV['MWUI_DB_USERNAME'] %>
+  password: <%= ENV['MWUI_DB_PASSWORD'] %>
   port: 3306
   pool: 5
-
+  host: <%= ENV['MWUI_DB_HOST'] %>
+  database: <%= ENV['MWUI_DB_NAME'] %>
 
 development:
   <<: *default
   host: docker.demo
-  database: motowebui
+  database: motowebui_db
 
 test:
   <<: *default
-  host: motowebui_db
-  database: motowebui
 
 production:
   <<: *default
-  host: motowebui_db
-  database: motowebui
