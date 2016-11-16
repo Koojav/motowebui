@@ -10,8 +10,6 @@ default: &default
 
 development:
   <<: *default
-  host: docker.demo
-  database: motowebui
 
 test:
   <<: *default

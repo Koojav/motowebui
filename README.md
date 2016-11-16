@@ -11,7 +11,8 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 * `cd motowebui`
 * `docker-compose up -d` (automatically deployed as production, see `Configuration` section)  
 <p> </p>
-**Important note:** When deploying this way no additional configuration is required, everything works right out of the box.
+
+**Note:** Dockerized deployment requires no additional configuration, everything works right out of the box.
 
 ## 2.2 Manually
 
@@ -20,46 +21,57 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 * Install Bundler
 * Install required Gems using Bundler
 * Install & run MySQL/PostgreSQL server (latter one requires small changes in Rails connectors)
-* Configure database connection (please see `Configuration` section)
+* Set environment variables.
+* 
 * `cd motowebui/bin`
 * `rails assets:precompile`
 * `rails db:migrate`
 * `rails db:seed`
-* Review `config/secrets.yml` in order to set appropriate secret key for production environment.
-* `rails server -b 0.0.0.0 -e production`
+* `rails server -b 0.0.0.0`
+<p> </p>
+
+**Note:** Please consult `Configuration` section on setting ENV VARs and Rails/database properties.
+
 
 ## 2.3 (Optional) Verifying deployment correctness
-TODO TODO TODO TODO TODO TODO TODO TODO
+After a successful deployment a few endpoints can be inspected to check if everything went fine.  
+Below is a list of what, and where, should be displayed:
+
+* yourdomain:3000 - CSS styled datatable with information about lack of data to display
+* yourdomain:3000/api/testers - JSON with "Not assigned" tester
+* yourdomain:3000/api/results - JSON with a list of Result objects
 
 
 # 3. Configuration
-**In overall:**
-- when deploying manually **MotoWebUI** and it's properties are configured in the same manner as every Ruby on Rails app.  
-* when deploying via `docker-compose` above is still relevant plus three files related to `docker`:
-    * `docker-compose.yml` - defines relations and environment variables for docker containers (motowebui, motowebui_db)
-    * `Dockerfile` - describes what should be installed in `motowebui` container
-    * `entrypoint.sh` - fires up when dockers are up and checks if further app initialization is possible
+Most of the settings are self explanatory.  
+Please review files appropriate to chosen process of deployment:
 
-### 3.1 Rails
-* Database host, name, login credentials and type (MySQL, PostgreSQL) can be defined in `config/database.yml`  
-* When changing database type to PostgreSQL appropriate `gem` is required in `Gemfile`  
+- Docker: `Dockerfile`,`docker-compose.yml`,`entrypoint.sh`
+- Manual: `config/database.yml`, `config/secrets.yml`
+
+### 3.1 Environment variables
+All ENV VARs used by **MotoWebUI** are listed in `docker-compose.yml`. 
+When not using Docker you still may configure app just by setting appropriate ENV VARs or edit them out, in aforementioned files, and set to constant strings.
+
+
+### 3.2 Changing database to PostgreSQL/SQLite
+* When changing database type to PostgreSQL appropriate `gem` is required in `Gemfile`
 * **Untested:** Use of SQLite might be possible with Rails server set to 1 thread (default: 5). 
-* Review `config/database.yml` in order to understand how secret keys work for each possible environment.
-
-### 3.2 Docker / docker-compose
-* When deploying app using `docker-compose` database properties, such as login and password, are set in `docker-compose.yml`
-* So is secret key for production.
 
 
 # 4. Usage
-TODO TODO TODO TODO TODO TODO TODO TODO TODO
-
 * Deploy
-* Provide data, via REST API, to be displayed. First create Test Suite, then assign Test Run to it. Afterwards create Tests in that Test Run. 
-For technical details please consult `REST API` section.
-* Access results via {your_url}:PORT (3000 by default)
+* Provide data, via REST API, to be displayed. 
+    * Create Test Suite(s)
+    * Create Test Run(s) and assign it to Test Suite.
+    * Create Test(s) and assign them to Test Run.  
+* Access and modify manually your data in various views:
+    * `yourdomain:3000` - list of all Test Suites
+    * `yourdomain:3000/suites/SUITE_ID/runs` - list of Test Runs in a Test Suite
+    * `yourdomain:3000/suites/SUITE_ID/runs/RUN_ID` - details of a Test Run + list of Tests in it
+    * `yourdomain:3000/suites/SUITE_ID/runs/RUN/tests/TEST_ID` - details of a Test
 
-TODO TODO TODO TODO TODO TODO TODO TODO TODO : WEBSITE SECTIONS (suites, runs, tests, log)
+**Note:** For technical details please consult `REST API` section.
 
 
 # 5. Data structure and functionality
