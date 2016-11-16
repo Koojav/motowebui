@@ -36,9 +36,9 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 After a successful deployment a few endpoints can be inspected to check if everything went fine.  
 Below is a list of what, and where, should be displayed:
 
-* yourdomain:3000 - CSS styled datatable with information about lack of data to display
-* yourdomain:3000/api/testers - JSON with "Not assigned" tester
-* yourdomain:3000/api/results - JSON with a list of Result objects
+* `yourdomain:3000` - CSS styled datatable with information about lack of data to display
+* `yourdomain:3000/api/testers` - JSON with "Not assigned" tester
+* `yourdomain:3000/api/results` - JSON with a list of Result objects
 
 
 # 3. Configuration
@@ -83,22 +83,69 @@ Project is composed out of a few data structures that stay in close relation wit
     Tests can have Logs.  
     Test Runs and Tests have Results.    
 
-TODO TODO TODO TODO TODO TODO TODO TODO TODO : LIST AND DESCRIBE FIELDS IN OBJECTS
 
-* Test Suites
-    * name
-* Test Runs
-    * name
-    * start_time
-    * duration
-    * result_id
-    * suite_id
-    * tester_id
-* Tests
-* Results
-* Testers
-* Logs
+### 5.1 Test Suites
+**Info:** Test Suites should represent 'packages' of tests, for example: `Regression 16.20`  
+**Creation policy:** Only one Test Suite of a certain name, case insensitive, can exist at the same time. 
+When creating new Test Suite with previously existing name the existing Test Suite will be retrieved.  
+**Fields:** 
 
+* **name** `String` Test Suite's name.  
+
+### 5.2 Test Runs
+**Info:** Test Runs have unique names in the scope of Test Suite. 
+When Test Run with previously existing name is submitted old one is destroyed, but it's ID is saved 
+so when re-submitting results of re-run Test Run saved URLs will be still valid.  
+**Creation policy:** Only one Test Suite of a certain name, case insensitive, can exist at the same time.  
+**Fields:** 
+
+* **name** `String` Test Run's name.
+* **start_time** `Integer` Epoch, in seconds.
+* **duration** `Integer` In seconds.
+* **result_id** `Integer` ID of Test Run's result. 
+ Test Run results are automatically evaluated when one of the child Tests changes, marks parent Test Run as `dirty` and request comes to display Test Run's details. 
+ TR result is the 'least satisfactory' in that order: RUNNING, ERROR, FAIL, SKIP, PASS.
+* **suite_id** `Integer` ID of Test Suite to which Test Run belongs.
+* **tester_id** `Integer` ID of Tester assigned to Test Run.  
+
+### 5.2 Tests
+**Info:** TODO TODO TODO TODO TODO TODO TODO   
+**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Fields:** 
+
+* **name** `String` Test Run's name.
+* **start_time** `Integer` Epoch, in seconds.
+* **duration** `Integer` In seconds.
+* **result_id** `Integer` ID of Test's result.
+* **error_message** `String` Any message that accompanies Test and is to be displayed in the 'Error' section of Test's details.
+* **fail_message** `String` Any message that accompanies Test and is to be displayed in the 'Failure' section of Test's details.
+* **ticket_url** `String` URL to external work tracking system (for example Jira) which will be displayed on Test's view.
+* **tags** `String` Array of tags, joined on '`', which will be displayed on Test's view.
+* **run_id** `Integer`  ID of Test Run to which this tests belongs.
+
+### 5.2 Results
+**Info:** TODO TODO TODO TODO TODO TODO TODO   
+**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Fields:** 
+
+* **name** `String`
+* **manual** `Boolean`
+* **category** `String`
+TODO TODO TODO TODO TODO TODO TODO TODO TODO : **Results + Categories explanation**
+
+### 5.2 Testers
+**Info:** TODO TODO TODO TODO TODO TODO TODO   
+**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Fields:** 
+
+* **name** `String` Tester's name
+
+### 5.2 Logs
+**Info:** TODO TODO TODO TODO TODO TODO TODO   
+**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Fields:** 
+
+* **text** `String` Log's text.
 
 
 **Example**:  
@@ -110,8 +157,7 @@ TODO TODO TODO TODO TODO TODO TODO TODO TODO : LIST AND DESCRIBE FIELDS IN OBJEC
         * Tests 1..N
     * Test Run "Web UI"
         * Tests 1..N
- 
-TODO TODO TODO TODO TODO TODO TODO TODO TODO : **Results + Categories explanation**
+
 
 
 # 6. REST API
