@@ -109,7 +109,7 @@ so when re-submitting results of re-run Test Run saved URLs will be still valid.
 * **tester_id** `Integer` ID of Tester assigned to Test Run.  
 
 ### 5.2 Tests
-**Info:** TODO TODO TODO TODO TODO TODO TODO   
+**Info:** Outcome of a singular Test.  
 **Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
 **Fields:** 
 
@@ -125,7 +125,7 @@ so when re-submitting results of re-run Test Run saved URLs will be still valid.
 
 ### 5.2 Results
 **Info:** TODO TODO TODO TODO TODO TODO TODO   
-**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Creation policy:** TODO TO DO TODO
 **Fields:** 
 
 * **name** `String`
