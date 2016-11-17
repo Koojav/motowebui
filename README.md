@@ -6,16 +6,19 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 
 # 2. Deployment
 
-Required versions: 
-`docker >= 1.12`
-`docker-compose >= 1.9`
-
 ## 2.1 Using `docker` and `docker-compose`
 
+### 2.1.1 Prerequisites: 
+* `docker >= 1.12`
+* `docker-compose >= 1.9`
+
+### 2.1.1 Commands: 
 * `git clone git@github.com:Koojav/motowebui.git motowebui`
 * `cd motowebui`
-* `docker-compose up -d` (automatically deployed as production on port 3000, see `Configuration` section)
-* `MWUI_PUBLIC_PORT=3333 docker-compoer up -d` (change default port 3000 to something else)
+* `docker-compose up -d` 
+<p> </p>
+
+**Note:** Automatically deployed as production on port 3000, see `Configuration` section for more details.  
 <p> </p>
 
 **Note:** Dockerized deployment requires no additional configuration, everything works right out of the box.
@@ -54,12 +57,19 @@ Please review files appropriate to chosen process of deployment:
 - Docker: `Dockerfile`,`docker-compose.yml`,`entrypoint.sh`
 - Manual: `config/database.yml`, `config/secrets.yml`
 
-### 3.1 Environment variables
+### 3.1 Default port
+Port, on which applications listens, is set by default to 3000.  
+It can be changed by setting `MWUI_PUBLIC_PORT` ENV VAR prior to running containers.  
+**Example:**
+
+    MWUI_PUBLIC_PORT=3333 docker-composer up -d
+
+### 3.2 Docker's environment variables
 All ENV VARs used by **MotoWebUI** are listed in `docker-compose.yml`. 
 When not using Docker you still may configure app just by setting appropriate ENV VARs or edit them out, in aforementioned files, and set to constant strings.
 
 
-### 3.2 Changing database to PostgreSQL/SQLite
+### 3.3 Changing database to PostgreSQL/SQLite
 * When changing database type to PostgreSQL appropriate `gem` is required in `Gemfile`
 * **Untested:** Use of SQLite might be possible with Rails server set to 1 thread (default: 5). 
 
@@ -130,12 +140,12 @@ so when re-submitting results of re-run Test Run saved URLs will be still valid.
 * **run_id** `Integer`  ID of Test Run to which this tests belongs.
 
 ### 5.2 Results
-**Info:** TODO TODO TODO TODO TODO TODO TODO   
-**Creation policy:** TODO TO DO TODO
+**Info:** Represents one of the many possible outcomes of Test.
+**Creation policy:** Seeded at deployment. 
 **Fields:** 
 
-* **name** `String`
-* **manual** `Boolean`
+* **name** `String` Result's displayed name.
+* **manual** `Boolean` Indicates whether result can be set manually via GUI.
 * **category** `String`
 TODO TODO TODO TODO TODO TODO TODO TODO TODO : **Results + Categories explanation**
 
