@@ -5,11 +5,17 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 
 
 # 2. Deployment
+
+Required versions: 
+`docker >= 1.12`
+`docker-compose >= 1.9`
+
 ## 2.1 Using `docker` and `docker-compose`
 
 * `git clone git@github.com:Koojav/motowebui.git motowebui`
 * `cd motowebui`
-* `MWUI_PUBLIC_PORT=3333 docker-compose up -d` (automatically deployed as production, see `Configuration` section, port variable is MANDATORY)
+* `docker-compose up -d` (automatically deployed as production on port 3000, see `Configuration` section)
+* `MWUI_PUBLIC_PORT=3333 docker-compoer up -d` (change default port 3000 to something else)
 <p> </p>
 
 **Note:** Dockerized deployment requires no additional configuration, everything works right out of the box.
