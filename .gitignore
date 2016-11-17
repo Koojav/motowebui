@@ -3,4 +3,6 @@
 .idea/
 test/
 tmp/
+data/
+log/*.log
 Gemfile.lock
