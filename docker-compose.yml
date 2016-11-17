@@ -3,7 +3,7 @@ services:
   motowebui:
     build: .
     ports:
-      - "3000:3000"
+      - "${MWUI_PUBLIC_PORT}:3000"
     environment:
       - SECRET_KEY_BASE=change_value_of_this_key_as_soon_as_you_realize_its_here_and_doesnt_look_safe
       - RAILS_SERVE_STATIC_FILES=1

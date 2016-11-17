@@ -9,7 +9,7 @@ Section `Data structure and functionality` contains **TL;DR** description of how
 
 * `git clone git@github.com:Koojav/motowebui.git motowebui`
 * `cd motowebui`
-* `docker-compose up -d` (automatically deployed as production, see `Configuration` section)  
+* `MWUI_PUBLIC_PORT=3333 docker-compose up -d` (automatically deployed as production, see `Configuration` section, port variable is MANDATORY)
 <p> </p>
 
 **Note:** Dockerized deployment requires no additional configuration, everything works right out of the box.
