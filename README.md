@@ -140,25 +140,24 @@ so when re-submitting results of re-run Test Run saved URLs will be still valid.
 * **run_id** `Integer`  ID of Test Run to which this tests belongs.
 
 ### 5.2 Results
-**Info:** Represents one of the many possible outcomes of Test.
-**Creation policy:** Seeded at deployment. 
+**Info:** Represents one of the many possible outcomes of Test.  
+**Creation policy:** Seeded at deployment.  
 **Fields:** 
 
 * **name** `String` Result's displayed name.
 * **manual** `Boolean` Indicates whether result can be set manually via GUI.
-* **category** `String`
-TODO TODO TODO TODO TODO TODO TODO TODO TODO : **Results + Categories explanation**
+* **category** `String` Categories group various results. They are the actual value based on which Test Run stats are evaluated. Result's name is just for display purposes.
 
 ### 5.2 Testers
-**Info:** TODO TODO TODO TODO TODO TODO TODO   
-**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Info:** Represent a person that can be assigned to Test Run and be displayed as responsible one.  
+**Creation policy:** Testers must have a unique name.  
 **Fields:** 
 
 * **name** `String` Tester's name
 
 ### 5.2 Logs
-**Info:** TODO TODO TODO TODO TODO TODO TODO   
-**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Info:** Text which includes all important data logged during the execution of the Test.  
+**Creation policy:** Logs are a singular Rails resource - there is one log per Test.  
 **Fields:** 
 
 * **text** `String` Log's text.
