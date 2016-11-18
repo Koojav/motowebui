@@ -1,0 +1,10 @@
+<div class="history-nav text-primary">
+  <% nav.each_with_index do |n,i| %>
+       <%= link_to n[:title], n[:url] %>
+      <% if i != nav.length - 1 %>
+          <strong> // </strong>
+      <% end %>
+
+  <% end %>
+  <%= link_to yield(:title), request.path, :class => 'no-link' %>
+</div>

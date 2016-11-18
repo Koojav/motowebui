@@ -6,17 +6,11 @@ class Run < ApplicationRecord
   after_find :validate_result, if: :result_dirty
 
   def display_duration
-    begin
-      converted_value = Time.at(self.duration).utc.strftime("%H:%M:%S")
-    rescue
-      converted_value = '~'
-    end
-
-    converted_value
+    Time.at(duration).utc.strftime('%H:%M:%S')
   end
 
   def tester_name
-    Tester.find(self.tester_id).name
+    Tester.find(tester_id).name
   end
 
   # Evaluates run.result based on run.tests.categories

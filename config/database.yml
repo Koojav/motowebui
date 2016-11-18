@@ -10,6 +10,10 @@ default: &default
 
 development:
   <<: *default
+  username: root
+  password: root_password
+  host: docker.demo
+  database: motowebui
 
 test:
   <<: *default

@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 20161111114000) do
 
   create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.text    "text",    limit: 65535
+    t.text    "text",    limit: 4294967295
     t.integer "test_id"
     t.index ["test_id"], name: "index_logs_on_test_id", using: :btree
   end

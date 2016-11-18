@@ -15,10 +15,10 @@
         result_options = Result.where(manual: true).pluck(:id,:name)
         @tests.each do |test| %>
           <tr>
-            <td class="col-xs-6"><%= link_to test.name, suite_run_test_path(@run.suite_id, @run.id, test.id) %></td>
-            <td class="col-xs-2"><%= test.start_time.to_s %></td>
-            <td class="col-xs-2"><%= test.display_duration %></td>
-            <td align="center">
+            <td class="col-xs-8"><%= link_to test.display_name, suite_run_test_path(@run.suite_id, @run.id, test.id) %></td>
+            <td class="col-xs-2" align="center"><%= test.start_time.to_s(:db) %></td>
+            <td align="center"><%= test.display_duration %></td>
+            <td class="col-xs-2" align="center">
               <div class="btn-group" role="group" style="width: 70%">
                 <%# style of this button is also modified in jQuery responsible for sending manually changed result to API %>
                 <button type="button" class="btn-result btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"

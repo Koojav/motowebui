@@ -1,4 +1,6 @@
-<%= render 'runs/details' %>
+<% navigation_add @run.suite.name, suite_runs_path(@run.suite.id) %>
+<% navigation_add @run.name, suite_run_path(@run.suite.id, @run.id) %>
 
+<%= render 'runs/details' %>
 <%= render 'tests/list' %>
 

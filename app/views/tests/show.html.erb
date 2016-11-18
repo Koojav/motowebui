@@ -1,1 +1,5 @@
+<% navigation_add @test.run.suite.name, suite_runs_path(@test.run.suite.id) %>
+<% navigation_add @test.run.name, suite_run_path(@test.run.suite.id, @test.run.id) %>
+<% navigation_add @test.name, suite_run_test_path(@test.run.suite.id, @test.run.id, @test.id) %>
+
 <%= render 'tests/details' %>
