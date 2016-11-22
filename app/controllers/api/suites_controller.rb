@@ -13,7 +13,7 @@ class Api::SuitesController < ApplicationController
     # If it didn't exist - create it
     if suite.nil?
       input = JSON.parse(request.body.read)
-      suite = Suite.new input
+      suite = Suite.new(input)
       suite.save!
     end
 

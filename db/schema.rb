@@ -49,11 +49,11 @@ ActiveRecord::Schema.define(version: 20161111114000) do
 
   create_table "tests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "result_id",     default: 1, null: false
+    t.integer  "result_id",                   default: 1, null: false
     t.datetime "start_time"
-    t.integer  "duration",      default: 0
-    t.string   "error_message"
-    t.string   "fail_message"
+    t.integer  "duration",                    default: 0
+    t.text     "error_message", limit: 65535
+    t.text     "fail_message",  limit: 65535
     t.string   "ticket_url"
     t.string   "tags"
     t.integer  "run_id"

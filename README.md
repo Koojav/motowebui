@@ -109,10 +109,9 @@ When creating new Test Suite with previously existing name the existing Test Sui
 * **name** `String` Test Suite's name.  
 
 ### 5.2 Test Runs
-**Info:** Test Runs have unique names in the scope of Test Suite. 
-When Test Run with previously existing name is submitted old one is destroyed, but it's ID is saved 
-so when re-submitting results of re-run Test Run saved URLs will be still valid.  
-**Creation policy:** Only one Test Suite of a certain name, case insensitive, can exist at the same time.  
+**Info:** Test Runs have unique names in the scope of Test Suite.   
+**Creation policy:** Only one Test Run of a certain name, case insensitive, can exist at the same time. 
+When creating new Test Run with previously existing name the existing Test Run will be retrieved.  
 **Fields:** 
 
 * **name** `String` Test Run's name.
@@ -126,7 +125,8 @@ so when re-submitting results of re-run Test Run saved URLs will be still valid.
 
 ### 5.2 Tests
 **Info:** Outcome of a singular Test.  
-**Creation policy:** TODO TODO TODO TODO TODO TODO TODO   
+**Creation policy:** Tests must have unique, case insensitive, names in scope of Test Run. 
+When creating a Test with previously existing name old one will be deleted first then new one created in it's place with the same ID so old URLs still point to something.  
 **Fields:** 
 
 * **name** `String` Test Run's name.
@@ -194,7 +194,7 @@ Input and output format for all calls is JSON.
 
 * name `String` - Test Suite's name  
 
-**Returns:** Created Test Suite or existing one if provided name matched, case insensitively, with a name of previously created suite.  
+**Returns:** Created Test Suite or existing one if provided name matched, case insensitively, with a name of previously created Test Suite.  
 
 ---
 
@@ -231,7 +231,7 @@ Input and output format for all calls is JSON.
 * tester_id `Integer` _(optional)_ - ID of a Tester to be assigned to this Test Run. Default: 1 ('Not assigned')
 * result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this run. Default: 1 ('Running')
 
-**Returns:** Creates Test Run and returns it. If there already was an existing Run, in scope of SUITE_ID, with the same name it will be destroyed first.
+**Returns:** Created Test Run or existing one if provided name matched, case insensitively, with a name of previously created Test Run.
 
 ---
  
@@ -271,7 +271,7 @@ Input and output format for all calls is JSON.
 * fail_message `String` _(optional)_ - Text to be displayed as 'Failures'.
 * result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this run. Default: 1 ('Running').
 
-**Returns:** Creates Test and returns it.
+**Returns:** Creates Test and returns it. Will delete previously existing Test first if it had the same name (Test Run scope, case insensitive, ID is stored so URLs will be still valid).
 
 ---
  
