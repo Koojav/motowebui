@@ -7,7 +7,7 @@ class CreateTests < ActiveRecord::Migration[5.0]
       t.integer     :duration, default: 0
       t.text        :error_message
       t.text        :fail_message
-      t.string      :ticket_url
+      t.text        :ticket_urls
       t.string      :tags
       t.references  :run, foreign_key: true
     end

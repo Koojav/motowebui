@@ -23,21 +23,25 @@
         <td><b>Duration</b></td>
         <td><%= @test.display_duration %></td>
       </tr>
-      <% if @test.ticket_url %>
+      <% if @test.ticket_urls %>
           <tr>
-            <td><b>Ticket URL</b></td>
-            <td><a href="<%= @test.ticket_url %>"><%= @test.ticket_url %></a></td>
-          </tr>
-      <% end %>
-      <%  if @test.tags %>
-          <tr>
-            <td><b>Tags</b></td>
+            <td><b>Ticket URLs</b></td>
             <td>
-              <% @test.tags.split(',').each do |tag|%>
-              <span class="label label-primary"><%= tag %></span>
+              <% @test.ticket_urls.split(',').each do |url|%>
+                  <p><a href="<%= url %>"><%= url %></a></p>
               <% end %>
             </td>
           </tr>
+      <% end %>
+      <% if @test.tags %>
+        <tr>
+          <td><b>Tags</b></td>
+          <td>
+            <% @test.tags.split(',').each do |tag|%>
+            <span class="label label-primary"><%= tag %></span>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
       </tbody>
     </table>
