@@ -1,13 +1,20 @@
 <div class="box box-primary">
   <div class="box-body">
-    <table id="testsDataTable" class="table table-striped table-bordered">
+    <div id="batch-buttons" style="display: none">
+      <label>Set selected as:</label>
+      <button>Pass</button>
+      <button>Error</button>
+      <button>Fail</button>
+    </div>
+
+    <table id="testsDataTable" class="table table-hover">
       <thead>
       <tr>
         <th></th>
         <th>Name</th>
         <th>Start time</th>
         <th>Duration</th>
-        <th class="result-column">Result</th>
+        <th class="column-result">Result</th>
       </tr>
       </thead>
       <tbody>
@@ -18,9 +25,9 @@
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"></td>
             <td class="col-xs-8"><%= link_to test.display_name, suite_run_test_path(@run.suite_id, @run.id, test.id) %></td>
-            <td class="col-xs-2" align="center"><%= test.start_time.to_s(:db) %></td>
-            <td align="center"><%= test.display_duration %></td>
-            <td class="col-xs-2" align="center">
+            <td class="col-xs-2"><%= test.start_time.to_s(:db) %></td>
+            <td><%= test.display_duration %></td>
+            <td class="col-xs-2">
               <div class="btn-group" role="group" style="width: 70%">
                 <%# style of this button is also modified in jQuery responsible for sending manually changed result to API %>
                 <button type="button" class="btn-result btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"
@@ -45,9 +52,10 @@
 </div>
 
 <script>
-  // Initialize datatable
   $(document).ready(function ()
   {
+    // When DataTable is redrawn some fancier elements, like status buttons, require some additional setup
+    // to retain their functionality
     $('#testsDataTable').on( 'draw.dt', function ()
     {
       $(".result-dropdown-menu li a").off('click.testsdt');
@@ -90,36 +98,57 @@
       });
     } );
 
-
+    // Initialize datatable
     var table = $('#testsDataTable').DataTable(
-        {
-          paging: <%= @tests.length > 10 ? 'true' : 'false' %>,
-          pageLength: 10,
-          info: false,
-          lengthMenu: [10, 25, 50, 100],
-          columnDefs: [
-            { targets: ['result-column'], data: function(row, type, set, meta){
-              if (type === 'set')
-              {
-                row.val = set;
-                row.val_display = set;
-                row.val_filter = $(set).find('.btn-result').text();
-              }
-              else if (type === 'display')
-              {
-                return row.val_display
-              }
-              else if (type === 'filter')
-              {
-                return row.val_filter
-              }
+    {
+      paging: <%= @tests.length > 10 %>,
+      pageLength: 10,
+      info: false,
+      lengthMenu: [10, 25, 50, 100],
+      columnDefs: [
+        { targets: ['column-result'], data: function(row, type, set, meta){
+          if (type === 'set')
+          {
+            row.val = set;
+            row.val_display = set;
+            row.val_filter = $(set).find('.btn-result').text();
+          }
+          else if (type === 'display')
+          {
+            return row.val_display
+          }
+          else if (type === 'filter')
+          {
+            return row.val_filter
+          }
 
-              return row.val;
-            }}
-          ],
-          order: [[1, 'asc']]
-        }
+          return row.val;
+        }}
+      ],
+      order: [[1, 'asc']]
+    }
     );
+
+    // Clicking on rows toggles selection (expanding child rows)
+    $('#testsDataTable tbody').on( 'click', 'tr', function () {
+      var target = $(event.target);
+      var tr = $(this).closest('tr');
+      var tb = $(this).closest('table');
+
+      // Bootstrap doesn't recognize child rows in DataTables out of the box thus it's required
+      // to manually mark them, for example with 'row-child' class to be able to assign custom styles (no hover) and
+      // recognize them in event flow (disable selection of child rows by clicking on them)
+      if (target.is('td') && !target.hasClass( 'details-control' ) && !tr.hasClass('row-child') && !tb.hasClass('row-child-table'))
+      {
+
+        tr.toggleClass('selected');
+        // Hackity hacky - seems that AdminLTE2 broke Bootstrap's tr.selected style,
+        // so I'm just gonna apply another pretty color from predefined palette
+        tr.toggleClass('bg-warning');
+
+        evaluateBatchButtonsVisiblity();
+      }
+    });
 
     // Add event listener for opening and closing details
     $('#testsDataTable tbody').on('click', 'td.details-control', function () {
@@ -131,12 +160,16 @@
         // This row is already open - close it
         row.child.hide();
         tr.removeClass('shown');
+
+        // Change icon which represents expansion of the row
         $(this).removeClass('fa fa-fw fa-chevron-circle-down');
         $(this).addClass('fa fa-fw fa-chevron-circle-up');
       }
       else {
         // Open this row
-        showTestDescription(tr)
+        showTestDescription(tr);
+
+        // Change icon which represents expansion of the row
         $(this).removeClass('fa fa-fw fa-chevron-circle-up');
         $(this).addClass('fa fa-fw fa-chevron-circle-down');
       }
@@ -171,7 +204,7 @@
           ticket_content = null;
         }
 
-        content = '<table>';
+        var content = '<table class="row-child-table">';
 
         if (description != null)
         {
@@ -187,11 +220,24 @@
 
         content += '</table>';
         row.child(content).show();
+        row.child().addClass('row-child')
         tr.addClass('shown');
         return response;
       });
     }
 
+    // Shows/hides buttons responsible for changing multiple results at the same time
+    function evaluateBatchButtonsVisiblity()
+    {
+      if (table.rows('.selected').data().length > 0)
+      {
+        $('#batch-buttons').css('display', 'inherit');
+      }
+      else
+      {
+        $('#batch-buttons').css('display', 'none');
+      }
+    }
   });
 </script>
 

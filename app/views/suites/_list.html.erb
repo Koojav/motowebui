@@ -1,6 +1,6 @@
 <div class="box box-primary">
   <div class="box-body">
-    <table id="suitesDataTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <table id="suitesDataTable" class="table table-hover">
       <thead>
       <tr>
         <th>Name</th>
@@ -23,8 +23,8 @@
   $(document).ready(function() {
     $('#suitesDataTable').DataTable(
         {
-          paging: <%= @suites.length > 25 ? 'true' : 'false' %>,
-          pageLength: 25,
+          paging: <%= @suites.length > 10 %>,
+          pageLength: 10,
           info: false,
           lengthMenu: [ 25, 50, 100, 200 ]
         }
