@@ -9,6 +9,7 @@ class CreateTests < ActiveRecord::Migration[5.0]
       t.text        :fail_message
       t.text        :ticket_urls
       t.string      :tags
+      t.text        :description
       t.references  :run, foreign_key: true
     end
   end

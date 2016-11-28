@@ -54,8 +54,9 @@ ActiveRecord::Schema.define(version: 20161111114000) do
     t.integer  "duration",                    default: 0
     t.text     "error_message", limit: 65535
     t.text     "fail_message",  limit: 65535
-    t.string   "ticket_urls"
+    t.text     "ticket_urls",   limit: 65535
     t.string   "tags"
+    t.text     "description",   limit: 65535
     t.integer  "run_id"
     t.index ["result_id"], name: "index_tests_on_result_id", using: :btree
     t.index ["run_id"], name: "index_tests_on_run_id", using: :btree
