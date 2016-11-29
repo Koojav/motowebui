@@ -58,42 +58,36 @@
     // to retain their functionality
     $('#testsDataTable').on( 'draw.dt', function ()
     {
-      $(".result-dropdown-menu li a").off('click.testsdt');
+      // Clear selection whenever user redraws the table (filtering, searching, pagination)
+      $.each($('table tr[class~="selected"]'), function(index, value)
+      {
+        $(value).toggleClass('selected');
+      });
 
-      // Convert all list-based dropdown to <select>-like menus
+      $(".result-dropdown-menu li a").off('click.testsdt');
       $(".result-dropdown-menu li a").on('click.testsdt', function ()
       {
-        var button = $(this).parents('.dropdown-menu').siblings('button');
+        // each element represents a pair: test_id, result_id
+        var testIDs = [];
+        var newResultID = $(this).data('result-id');
 
-        $.ajax
-        (
-          {
-            type: "PUT",
-            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + button.data('test-id'),
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({result_id: $(this).data('result-id')})
-          }).done(function (response)
+        if (table.rows('.selected').data().length > 0)
         {
+          table.rows('.selected').every( function ( rowIdx, tableLoop, rowLoop ) {
+            var buttonGroup = this.data()['val'];
+            var button = $(buttonGroup).find('button');
+            testIDs.push(button.data('test-id'));
+          } );
+        }
+        else
+        {
+          var button = $(this).parents('.dropdown-menu').siblings('button');
+          testIDs.push(button.data('test-id'));
+        }
 
-          var result_styles = []
-          <% Result.all.each do |result| %>
-          result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
-          <% end %>
-
-          button.data('result-id', response.result_id);
-          button.removeClass();
-          button.addClass("btn btn-xs btn-block dropdown-toggle");
-
-          $.each(result_styles, function(index)
-          {
-            if ($(this)[0] == response.result_id)
-            {
-              button.html($(this)[1] + ' <span class="caret"/>');
-              button.addClass($(this)[2]);
-              return false; // needs to return false in order to "break" from jQuery "each"...
-            }
-          });
+        $.each(testIDs, function(index, value)
+        {
+          changeTestResult(value, newResultID);
         });
       });
     } );
@@ -140,13 +134,7 @@
       // recognize them in event flow (disable selection of child rows by clicking on them)
       if (target.is('td') && !target.hasClass( 'details-control' ) && !tr.hasClass('row-child') && !tb.hasClass('row-child-table'))
       {
-
         tr.toggleClass('selected');
-        // Hackity hacky - seems that AdminLTE2 broke Bootstrap's tr.selected style,
-        // so I'm just gonna apply another pretty color from predefined palette
-        tr.toggleClass('bg-warning');
-
-        evaluateBatchButtonsVisiblity();
       }
     });
 
@@ -226,17 +214,47 @@
       });
     }
 
-    // Shows/hides buttons responsible for changing multiple results at the same time
-    function evaluateBatchButtonsVisiblity()
+    // Changes result_id for specified test
+    function changeTestResult(test_id, result_id)
     {
-      if (table.rows('.selected').data().length > 0)
+      // Send changed Result
+      $.ajax
+      (
+          {
+            type: "PUT",
+            //url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + button.data('test-id'),
+            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + test_id,
+            contentType: "application/json",
+            dataType: "json",
+            //data: JSON.stringify({result_id: $(this).data('result-id')})
+            data: JSON.stringify({result_id: result_id})
+          }).done(function (response)
       {
-        $('#batch-buttons').css('display', 'inherit');
-      }
-      else
-      {
-        $('#batch-buttons').css('display', 'none');
-      }
+        // List all possible results and their matching styles, so button can be re-styled once result is set
+        var result_styles = []
+        <% Result.all.each do |result| %>
+        result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
+        <% end %>
+
+        var button = $('.btn-result[data-test-id="'+ test_id +'"]');
+
+        // Update data on button which represents current result
+        button.data('result-id', response.result_id);
+
+        // Re-style button to show display new result
+        button.removeClass();
+        button.addClass("btn-result btn btn-xs btn-block dropdown-toggle ");
+
+        $.each(result_styles, function(index)
+        {
+          if ($(this)[0] == response.result_id)
+          {
+            button.html($(this)[1] + ' <span class="caret"/>');
+            button.addClass($(this)[2]);
+            return false; // needs to return false in order to "break" from jQuery "each"...
+          }
+        });
+      });
     }
   });
 </script>

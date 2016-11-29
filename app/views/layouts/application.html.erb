@@ -6,14 +6,18 @@
     <title>MotoWebUI</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css' %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
     <style>
-      .table-hover .row-child :hover {
-        background-color: white;
-      }
+        .table-hover .row-child :hover {
+          background-color: white;
+        }
+
+        .table-hover .selected
+        {
+          background-color: #ddeaf1;
+        }
     </style>
 
   </head>
