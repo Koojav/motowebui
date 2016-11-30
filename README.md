@@ -116,12 +116,15 @@ When creating new Test Run with previously existing name the existing Test Run w
 
 * **name** `String` Test Run's name.
 * **start_time** `Integer` Epoch, in seconds.
-* **duration** `Integer` In seconds.
-* **result_id** `Integer` ID of Test Run's result. 
- Test Run results are automatically evaluated when one of the child Tests changes, marks parent Test Run as `dirty` and request comes to display Test Run's details. 
- TR result is the 'least satisfactory' in that order: RUNNING, ERROR, FAIL, SKIP, PASS.
+* **duration** `Integer` In seconds.  
 * **suite_id** `Integer` ID of Test Suite to which Test Run belongs.
 * **tester_id** `Integer` ID of Tester assigned to Test Run.  
+* **stats_tests_all** `Integer` Number of all Tests in Test Run.  
+* **stats_tests_pass** `Integer` Number of passed Tests in Test Run.  
+* **stats_tests_error** `Integer` Number of erorr Tests in Test Run.  
+* **stats_tests_fail** `Integer` Number of failed Tests in Test Run.  
+* **stats_tests_skip** `Integer` Number of skipped Tests in Test Run.  
+* **stats_tests_running** `Integer` Number of running Tests in Test Run.  
 
 ### 5.2 Tests
 **Info:** Outcome of a singular Test.  
@@ -146,7 +149,7 @@ When creating a Test with previously existing name old one will be deleted first
 
 * **name** `String` Result's displayed name.
 * **manual** `Boolean` Indicates whether result can be set manually via GUI.
-* **category** `String` Categories group various results. They are the actual value based on which Test Run stats are evaluated. Result's name is just for display purposes.
+* **category** `String` Categories group various results. They are the actual value based on which Test Runs' stats are evaluated. Result's name is just for display purposes.
 
 ### 5.2 Testers
 **Info:** Represent a person that can be assigned to Test Run and be displayed as responsible one.  
@@ -229,8 +232,7 @@ Input and output format for all calls is JSON.
 * start_time `Integer` _(optional)_ - Time of start, Epoch, in seconds.
 * duration `Integer` _(optional)_ - Duration of test, in seconds.
 * tester_id `Integer` _(optional)_ - ID of a Tester to be assigned to this Test Run. Default: 1 ('Not assigned')
-* result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this run. Default: 1 ('Running')
-
+* stats_dirty `Boolean` _(optional)_ - Set to true to force validation of Tests' stats in a Test Run.
 **Returns:** Created Test Run or existing one if provided name matched, case insensitively, with a name of previously created Test Run.
 
 ---
@@ -269,7 +271,7 @@ Input and output format for all calls is JSON.
 * tags `String` _(optional)_ - Array of tags, joined on `,` which will be displayed on Test's page.
 * error_message `String` _(optional)_ - Text to be displayed as 'Errors'.
 * fail_message `String` _(optional)_ - Text to be displayed as 'Failures'.
-* result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this run. Default: 1 ('Running').
+* result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this Test. Default: 1 ('Running').
 
 **Returns:** Creates Test and returns it. Will delete previously existing Test first if it had the same name (Test Run scope, case insensitive, ID is stored so URLs will be still valid).
 
