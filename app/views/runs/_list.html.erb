@@ -58,19 +58,8 @@
                     else
                       tests_ratio = ((tests_pass.to_f/tests_all) * 100).floor
                     end
-
-                    if run.stats_tests_error > 0 || run.stats_tests_fail > 0
-                      progress_bar_class = 'progress-bar progress-bar-danger'
-                    elsif run.stats_tests_skip > 0
-                      progress_bar_class = 'progress-bar progress-bar-warning'
-                    else
-                      progress_bar_class = ''
-                    end
                 %>
                     <div class="progress-bar progress-bar-success"
-                         data-pass="<%= tests_pass %>"
-                         data-all="<%= tests_all %>"
-                         data-ratio="<%= (tests_pass/tests_all) * 100 %>"
                          style="width: <%= tests_ratio %>%">
                       <span><%= tests_ratio %>%</span>
                     </div>
