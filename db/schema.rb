@@ -26,13 +26,17 @@ ActiveRecord::Schema.define(version: 20161111114000) do
 
   create_table "runs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.string   "name"
-    t.integer  "tester_id",    default: 1
-    t.integer  "result_id",    default: 1
+    t.integer  "tester_id",           default: 1
     t.datetime "start_time"
-    t.integer  "duration",     default: 0
+    t.integer  "duration",            default: 0
     t.integer  "suite_id"
-    t.boolean  "result_dirty", default: false
-    t.index ["result_id"], name: "index_runs_on_result_id", using: :btree
+    t.boolean  "stats_dirty",         default: false
+    t.integer  "stats_tests_all",     default: 0
+    t.integer  "stats_tests_pass",    default: 0
+    t.integer  "stats_tests_error",   default: 0
+    t.integer  "stats_tests_fail",    default: 0
+    t.integer  "stats_tests_skip",    default: 0
+    t.integer  "stats_tests_running", default: 0
     t.index ["suite_id"], name: "index_runs_on_suite_id", using: :btree
     t.index ["tester_id"], name: "index_runs_on_tester_id", using: :btree
   end
@@ -63,7 +67,6 @@ ActiveRecord::Schema.define(version: 20161111114000) do
   end
 
   add_foreign_key "logs", "tests"
-  add_foreign_key "runs", "results"
   add_foreign_key "runs", "suites"
   add_foreign_key "runs", "testers"
   add_foreign_key "tests", "results"

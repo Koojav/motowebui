@@ -1,9 +1,8 @@
 class Run < ApplicationRecord
   belongs_to :suite
-  belongs_to :result
   has_many   :tests, dependent: :destroy
 
-  after_find :validate_result, if: :result_dirty
+  after_find :validate_stats, if: :stats_dirty
 
   def display_duration
     Time.at(duration).utc.strftime('%H:%M:%S')
@@ -13,23 +12,18 @@ class Run < ApplicationRecord
     Tester.find(tester_id).name
   end
 
-  # Evaluates run.result based on run.tests.categories
-  def validate_result
-    categories = tests.select('results.category').joins(:result).group('results.category').pluck('category')
+  # Evaluates Tests' statistics for this Run
+  def validate_stats
+    stats = tests.select('results.category').joins(:result).group(:category).count(:category)
 
-    if categories.include? 'RUNNING'
-      self.result = Result.find(1)
-    elsif categories.include? 'ERROR'
-      self.result = Result.find(4)
-    elsif categories.include? 'FAIL'
-      self.result = Result.find(3)
-    elsif categories.include? 'SKIP'
-      self.result = Result.find(5)
-    else
-      self.result = Result.find(2)
-    end
+    self.stats_tests_all     = tests.length
+    self.stats_tests_running = stats.key?('RUNNING')  ? stats['RUNNING'] : 0
+    self.stats_tests_error   = stats.key?('ERROR')    ? stats['ERROR']   : 0
+    self.stats_tests_fail    = stats.key?('FAIL')     ? stats['FAIL']    : 0
+    self.stats_tests_skip    = stats.key?('SKIP')     ? stats['SKIP']    : 0
+    self.stats_tests_pass    = stats.key?('PASS')     ? stats['PASS']    : 0
 
-    self.result_dirty = false
+    self.stats_dirty = false
     self.save!
   end
 

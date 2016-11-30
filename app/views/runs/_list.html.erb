@@ -7,7 +7,7 @@
         <th>Start time</th>
         <th>Duration</th>
         <th class="assignee-column">Assignee</th>
-        <th>Result</th>
+        <th>Passed</th>
       </tr>
       </thead>
       <tbody>
@@ -16,7 +16,8 @@
             <td class="col-xs-6"><%= link_to run.name, suite_run_path(run.suite.id, run.id) %></td>
             <td class="col-xs-2"><%= run.start_time.to_s(:db) %></td>
             <td><%= run.display_duration %></td>
-            <td class="col-xs-2">
+
+            <td class="col-xs-2" >
               <div class="btn-group" role="group" style="width: 70%">
                 <button type="button" class="btn-tester btn btn-xs btn-block dropdown-toggle"
                           data-toggle="dropdown"
@@ -31,8 +32,51 @@
               </div>
             </td>
 
-            <% result = Result.find(run.result_id) %>
-            <td><button type="button" class="btn btn-block <%= result.display_style_btn %> btn-xs"><%= result.name %></button></td>
+            <td class="col-xs-2" style="padding-top: 5px">
+              <%
+                if run.stats_tests_error > 0 || run.stats_tests_fail > 0
+                  progress_bar_class = 'progress-bar-danger'
+                elsif run.stats_tests_skip > 0
+                  progress_bar_class = 'progress-bar-warning'
+                else
+                  progress_bar_class = ''
+                end
+              %>
+              <div class="progress <%= progress_bar_class %>">
+                <% if run.stats_tests_running > 0 %>
+                    <div class="progress-bar progress-bar-primary progress-bar-striped active"
+                         style="width: 100%">
+                      <span class="sr-only">0%</span>
+                    </div>
+                <%
+                  else
+                    tests_all     = run.stats_tests_all
+                    tests_pass    = run.stats_tests_pass
+
+                    if tests_pass == 0 || tests_all == 0
+                      tests_ratio = 0
+                    else
+                      tests_ratio = ((tests_pass.to_f/tests_all) * 100).floor
+                    end
+
+                    if run.stats_tests_error > 0 || run.stats_tests_fail > 0
+                      progress_bar_class = 'progress-bar progress-bar-danger'
+                    elsif run.stats_tests_skip > 0
+                      progress_bar_class = 'progress-bar progress-bar-warning'
+                    else
+                      progress_bar_class = ''
+                    end
+                %>
+                    <div class="progress-bar progress-bar-success"
+                         data-pass="<%= tests_pass %>"
+                         data-all="<%= tests_all %>"
+                         data-ratio="<%= (tests_pass/tests_all) * 100 %>"
+                         style="width: <%= tests_ratio %>%">
+                      <span><%= tests_ratio %>%</span>
+                    </div>
+                <% end %>
+              </div>
+            </td>
           </tr>
       <% end %>
       </tbody>

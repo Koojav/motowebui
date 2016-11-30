@@ -35,7 +35,7 @@
           </tr>
           <tr>
             <td><b>Tests</b></td>
-            <td><%= @tests.length %></td>
+            <td><%= @run.tests.length %></td>
           </tr>
           </tbody>
         </table>
@@ -72,7 +72,7 @@
       labels: ["Running", "Passed", "Failed", "Error", "Skipped"],
       datasets: [{
         label: '# of Votes',
-        data: <%= [@stats[:running], @stats[:pass], @stats[:fail], @stats[:error], @stats[:skip],] %> ,
+        data: <%= [@run.stats_tests_running, @run.stats_tests_pass, @run.stats_tests_fail, @run.stats_tests_error, @run.stats_tests_skip] %>,
         backgroundColor: [
           'rgba(0, 192, 239, 1)',
           'rgba(0, 166, 90, 1)',

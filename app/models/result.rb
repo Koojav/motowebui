@@ -1,6 +1,5 @@
 class Result < ApplicationRecord
   has_many    :tests
-  has_many    :results
 
   def display_style_btn
     case self.category

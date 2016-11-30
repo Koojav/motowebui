@@ -8,22 +8,10 @@ class RunsController < ApplicationController
 
   def show
     @testers = Tester.all
-
     @run = Run.find(params[:id])
 
+    # views/tests/_list is sometimes rendered when using this controller and requires @tests
     @tests = @run.tests
-
-    test_result_stats = @tests.select('results.category').joins(:result).group(:category).count(:category)
-
-    # gather all result categories
-    categories = Result.select(:category).group(:category).collect { |i| i.category }
-
-    @stats = {}
-
-    categories.each do |category|
-      @stats[category.downcase.to_sym] = test_result_stats[category] || 0
-    end
-
   end
 
 end

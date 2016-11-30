@@ -24,7 +24,7 @@ class Test < ApplicationRecord
   # next time it can be validated once with new values based composed from Tests' ones.
   def mark_run_as_dirty
     # Invoked via pure SQL, not via ORM, in order to avoid triggering callbacks in Run
-    sql = "UPDATE runs SET result_dirty=1 WHERE runs.id=#{self.run_id};"
+    sql = "UPDATE runs SET stats_dirty=1 WHERE runs.id=#{self.run_id};"
     ActiveRecord::Base.connection.execute(sql)
   end
 
