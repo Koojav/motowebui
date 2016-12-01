@@ -22,10 +22,10 @@
                 <button type="button" class="btn-tester btn btn-xs btn-block dropdown-toggle"
                           data-toggle="dropdown"
                           data-run-id="<%= run.id %>">
-                <%= run.tester_name %> <span class="caret"></span>
+                <%= run.tester.name %> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu tester-dropdown-menu">
-                  <% @testers.each do |tester| %>
+                  <% testers_all.each do |tester| %>
                       <li><a data-tester-id="<%= tester.id %>" data-tester-name="<%= tester.name %>"><%= tester.name %></a></li>
                   <% end %>
                 </ul>

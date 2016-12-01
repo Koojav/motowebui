@@ -12,13 +12,13 @@
           <tr>
             <td><b>Assignee</b></td>
             <td>
-              <div class="btn-group" role="group" style="width: 70%">
+              <div class="btn-group" role="group" style="width: 80%">
               <button type="button" class="btnTester btn btn-xs btn-block dropdown-toggle"
                       data-toggle="dropdown">
-                <%= @run.tester_name %> <span class="caret"></span>
+                <%= @run.tester.name %> <span class="caret"></span>
               </button>
               <ul class="dropdown-menu tester-dropdown-menu">
-                <% @testers.each do |tester| %>
+                <% testers_all.each do |tester| %>
                     <li><a data-tester-id="<%= tester.id %>" data-tester-name="<%= tester.name %>"><%= tester.name %></a></li>
                 <% end %>
               </ul>

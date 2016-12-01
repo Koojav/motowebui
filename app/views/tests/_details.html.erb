@@ -12,7 +12,9 @@
           begin
           result = Result.find(@test.result_id)
         %>
-        <td><button type="button" class="btn <%= result.display_style_btn %> btn-xs"><%= result.name %></button></td>
+        <td>
+          <button type="button" class="btn <%= result.display_style_btn %> btn-xs" style="width: 120px"><%= result.name %></button>
+        </td>
         <% end %>
       </tr>
       <tr>

@@ -7,7 +7,6 @@ class SuitesController < ApplicationController
   def show
     @suite = Suite.find(params[:id])
     @runs = @suite.runs
-    @testers = Tester.all
   end
 
 end

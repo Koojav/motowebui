@@ -1,15 +1,12 @@
 class Run < ApplicationRecord
   belongs_to :suite
+  belongs_to :tester
   has_many   :tests, dependent: :destroy
 
   after_find :validate_stats, if: :stats_dirty
 
   def display_duration
     Time.at(duration).utc.strftime('%H:%M:%S')
-  end
-
-  def tester_name
-    Tester.find(tester_id).name
   end
 
   # Evaluates Tests' statistics for this Run
