@@ -69,7 +69,7 @@
   </div>
 
   <div class="box-body">
-    <%= @test.error_message %>
+    <%= simple_format(@test.error_message) %>
   </div>
 </div>
 <% end %>
@@ -81,7 +81,7 @@
       </div>
 
       <div class="box-body">
-        <%= @test.fail_message %>
+        <%= simple_format(@test.fail_message) %>
       </div>
     </div>
 <% end %>
