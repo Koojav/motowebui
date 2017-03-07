@@ -23,10 +23,10 @@
   $(document).ready(function() {
     $('#suitesDataTable').DataTable(
         {
-          paging: <%= @suites.length > 10 %>,
-          pageLength: 10,
+          paging: <%= @suites.length > 25 %>,
+          pageLength: 25,
           info: false,
-          lengthMenu: [ 25, 50, 100, 200 ]
+          lengthMenu: [10, 25, 50, 100]
         }
     );
   } );

@@ -105,8 +105,8 @@
 
     $('#runsDataTable').DataTable(
     {
-      paging: <%= @runs.length > 10 %>,
-      pageLength: 10,
+      paging: <%= @runs.length > 25 %>,
+      pageLength: 25,
       info: false,
       lengthMenu: [ 10, 25, 50, 100 ],
       columnDefs: [

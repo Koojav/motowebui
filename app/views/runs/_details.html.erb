@@ -69,7 +69,7 @@
   new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels: ["Running", "Passed", "Failed", "Error", "Skipped"],
+      labels: ["Running", "Pass", "Fail", "Error", "Skip"],
       datasets: [{
         label: '# of Votes',
         data: <%= [@run.stats_tests_running, @run.stats_tests_pass, @run.stats_tests_fail, @run.stats_tests_error, @run.stats_tests_skip] %>,
