@@ -13,7 +13,8 @@
       <button>Fail</button>
     </div>
 
-    <table id="testsDataTable" class="table table-hover">
+    <!-- Table will be invisible until datatables is initialized and finishes drawing !-->
+    <table id="testsDataTable" class="table table-hover" style="display: none">
       <thead>
       <tr>
         <th></th>
@@ -96,6 +97,8 @@
           changeTestResult(value, newResultID);
         });
       });
+
+      $(this).show();
     } );
 
     // Initialize datatable

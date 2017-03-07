@@ -100,6 +100,8 @@
           button.html(tester_name + ' <span class="caret"/>');
         });
       });
+
+      $(this).show();
     });
 
 
@@ -128,7 +130,8 @@
 
           return row.val;
         }}
-      ]
+      ],
+      order: [[1, 'desc']]
     });
 
   });
