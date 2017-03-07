@@ -10,14 +10,18 @@ services:
       - RAILS_ENV=production
       - MWUI_DB_NAME=motowebui
       - MWUI_DB_HOST=motowebui_db
-      - MWUI_DB_USERNAME=root
-      - MWUI_DB_PASSWORD=root_password
+      - MWUI_DB_USERNAME=motowebui_user
+      - MWUI_DB_PASSWORD=motowebui_password
     depends_on:
       - motowebui_db
   motowebui_db:
     image: mysql:5.7.16
+    ports:
+      - "3306:3306"
     volumes:
       - ./data/mysql:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_USER=motowebui_user
+      - MYSQL_PASSWORD=motowebui_password
+      - MYSQL_ROOT_PASSWORD=motowebui_root_password
       - MYSQL_DATABASE=motowebui

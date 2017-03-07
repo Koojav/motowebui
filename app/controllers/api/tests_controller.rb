@@ -34,7 +34,7 @@ class Api::TestsController < ApplicationController
     if test
       # Store Test's ID so once it's created anew its URL will stil point to the same object
       stored_id = test.id
-      test.destroy
+      Test.delete_with_dependencies(stored_id)
     end
 
     # Create new Test with data provided in input
@@ -62,8 +62,7 @@ class Api::TestsController < ApplicationController
   end
 
   def destroy
-    test = Test.find(params[:id])
-    render json: test.destroy
+    render json: Test.delete_with_dependencies(params[:id])
   end
 
 end

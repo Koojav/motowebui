@@ -37,8 +37,7 @@ class Api::RunsController < ApplicationController
   end
 
   def destroy
-    run = Run.find(params[:id])
-    render json: run.destroy
+    render json: Run.delete_with_dependencies(params[:id])
   end
 
 end

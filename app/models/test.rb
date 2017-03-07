@@ -1,7 +1,7 @@
 class Test < ApplicationRecord
   belongs_to :run
   belongs_to :result
-  has_one    :log, dependent: :destroy
+  has_one    :log, dependent: :delete
 
   after_commit :mark_run_as_dirty
 
@@ -26,6 +26,14 @@ class Test < ApplicationRecord
     # Invoked via pure SQL, not via ORM, in order to avoid triggering callbacks in Run
     sql = "UPDATE runs SET stats_dirty=1 WHERE runs.id=#{self.run_id};"
     ActiveRecord::Base.connection.execute(sql)
+  end
+
+  def self.delete_with_dependencies(test_id)
+    test = Test.find(test_id)
+    log = test.log
+
+    log.delete
+    test.delete
   end
 
 end

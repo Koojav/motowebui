@@ -1,7 +1,7 @@
 class Run < ApplicationRecord
   belongs_to :suite
   belongs_to :tester
-  has_many   :tests, dependent: :destroy
+  has_many   :tests, dependent: :delete_all
 
   after_find :validate_stats, if: :stats_dirty
 
@@ -22,6 +22,16 @@ class Run < ApplicationRecord
 
     self.stats_dirty = false
     self.save!
+  end
+
+  def self.delete_with_dependencies(run_id)
+    run = Run.includes(:tests).find(run_id)
+    tests = run.tests
+    logs = Log.where(test_id: tests.ids)
+
+    logs.delete_all
+    tests.delete_all
+    run.delete
   end
 
 end

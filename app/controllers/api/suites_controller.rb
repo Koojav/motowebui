@@ -32,8 +32,7 @@ class Api::SuitesController < ApplicationController
   end
 
   def destroy
-    suite = Suite.find(params[:id])
-    render json: suite.destroy
+    render json: Suite.delete_with_dependencies(params[:id])
   end
 
 end
