@@ -52,10 +52,10 @@
       <div class="col-md-2" valign="middle">
         <ul class="chart-legend clearfix">
           <li><i class="fa fa-circle-o text-aqua"></i> Running</li>
-          <li><i class="fa fa-circle-o text-green"></i> Passed</li>
-          <li><i class="fa fa-circle-o text-red"></i> Failed</li>
+          <li><i class="fa fa-circle-o text-green"></i> Pass</li>
+          <li><i class="fa fa-circle-o text-red"></i> Fail</li>
           <li><i class="fa fa-circle-o text-red"></i> Error</li>
-          <li><i class="fa fa-circle-o text-yellow"></i> Skipped</li>
+          <li><i class="fa fa-circle-o text-yellow"></i> Skip</li>
         </ul>
       </div>
 
@@ -65,8 +65,10 @@
 </div>
 
 <script>
+
+
   var canvas = document.getElementById("pieChart");
-  new Chart(canvas, {
+  var chart = new Chart(canvas, {
     type: 'doughnut',
     data: {
       labels: ["Running", "Pass", "Fail", "Error", "Skip"],
@@ -84,14 +86,15 @@
     },
     options: {
       legend: {display: false},
-      animation: false
+      animation: false,
+      onClick: function(event)
+      {
+        var search = $('.dataTables_filter input[type=search]');
+        search.val(chart.data.labels[chart.getElementsAtEvent(event)[0]._index]);
+        search.trigger('keyup');
+      }
     }
   });
-
-  canvas.onclick = function(event)
-  {
-      console.log(event);
-  }
 
   $(document).ready(function ()
   {
