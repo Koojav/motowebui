@@ -71,7 +71,6 @@
     data: {
       labels: ["Running", "Pass", "Fail", "Error", "Skip"],
       datasets: [{
-        label: '# of Votes',
         data: <%= [@run.stats_tests_running, @run.stats_tests_pass, @run.stats_tests_fail, @run.stats_tests_error, @run.stats_tests_skip] %>,
         backgroundColor: [
           'rgba(0, 192, 239, 1)',
@@ -84,11 +83,15 @@
       }]
     },
     options: {
-      legend: {
-        display: false
-      }
+      legend: {display: false},
+      animation: false
     }
   });
+
+  canvas.onclick = function(event)
+  {
+      console.log(event);
+  }
 
   $(document).ready(function ()
   {

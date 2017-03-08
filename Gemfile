@@ -44,4 +44,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'bootstrap-sass', '~> 3.3'
 gem 'jquery-datatables-rails', '~> 3.4'
-gem 'chart-js-rails'
+gem 'chart-js-rails', '0.1.2'
