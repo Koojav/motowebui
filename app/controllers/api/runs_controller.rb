@@ -20,8 +20,11 @@ class Api::RunsController < ApplicationController
     elsif input.key?('tester_id')
       run.tester_id = input['tester_id']
     end
-
     run.save!
+
+    # Makes sure that amount of Runs in a Suite doesn't exceed one set in ENV['MWUI_MAX_RUNS_IN_SUITE']
+    suite.delete_over_limit_runs
+
     render json: run
   end
 

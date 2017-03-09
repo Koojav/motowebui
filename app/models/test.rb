@@ -29,11 +29,11 @@ class Test < ApplicationRecord
   end
 
   def self.delete_with_dependencies(test_id)
-    test = Test.find(test_id)
-    log = test.log
+    tests = Test.where(id: test_id)
+    logs = Log.where(test_id: test_id)
 
-    log.delete
-    test.delete
+    logs.delete_all
+    tests.delete_all
   end
 
 end

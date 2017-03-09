@@ -24,14 +24,16 @@ class Run < ApplicationRecord
     self.save!
   end
 
+  # Deletes Run(s) with Tests and Logs that depend on it
+  # @param run_id Array or Integer
   def self.delete_with_dependencies(run_id)
-    run = Run.includes(:tests).find(run_id)
-    tests = run.tests
+    runs = Run.where(id: run_id)
+    tests = Test.where(run_id: run_id)
     logs = Log.where(test_id: tests.ids)
 
     logs.delete_all
     tests.delete_all
-    run.delete
+    runs.delete_all
   end
 
 end

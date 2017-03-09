@@ -12,7 +12,7 @@ services:
       - MWUI_DB_HOST=motowebui_db
       - MWUI_DB_USERNAME=motowebui_user
       - MWUI_DB_PASSWORD=motowebui_password
-      - MWUI_MAX_TR_IN_TS=0 # maximum amount of Test Runs in Test Suite, oldest will be deleted, 0 - no limit
+      - MWUI_MAX_RUNS_IN_SUITE=0 # maximum amount of Test Runs in Test Suite, oldest will be deleted, 0 - no limit
     depends_on:
       - motowebui_db
   motowebui_db:
