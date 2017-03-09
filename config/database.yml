@@ -3,8 +3,8 @@ default: &default
   encoding: utf8
   username: <%= ENV['MWUI_DB_USERNAME'] %>
   password: <%= ENV['MWUI_DB_PASSWORD'] %>
-  port: 3306
-  pool: 5
+  port: <%= ENV['MWUI_DB_PORT'] || 3306 %>
+  pool: <%= ENV['MWUI_DB_POOL'] || 5%>
   host: <%= ENV['MWUI_DB_HOST'] %>
   database: <%= ENV['MWUI_DB_NAME'] %>
 
