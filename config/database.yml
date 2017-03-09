@@ -4,7 +4,7 @@ default: &default
   username: <%= ENV['MWUI_DB_USERNAME'] %>
   password: <%= ENV['MWUI_DB_PASSWORD'] %>
   port: <%= ENV['MWUI_DB_PORT'] || 3306 %>
-  pool: <%= ENV['MWUI_DB_POOL'] || 5%>
+  pool: <%= ENV['MWUI_DB_POOL'] || 5 %>
   host: <%= ENV['MWUI_DB_HOST'] %>
   database: <%= ENV['MWUI_DB_NAME'] %>
 
