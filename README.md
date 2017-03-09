@@ -64,7 +64,7 @@ It can be changed by setting `MWUI_PUBLIC_PORT` ENV VAR prior to running contain
 
     MWUI_PUBLIC_PORT=3333 docker-composer up -d
 
-### 3.2 Docker's environment variables
+### 3.2 Environment variables
 All ENV VARs used by **MotoWebUI** are listed in `docker-compose.yml`. 
 When not using Docker you still may configure app just by setting appropriate ENV VARs or edit them out, in aforementioned files, and set to constant strings.
 
