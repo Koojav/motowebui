@@ -181,7 +181,7 @@ When creating a Test with previously existing name old one will be deleted first
 # 6. REST API
 All data that is required to describe appropriate test sets can be created, modified and deleted via REST API.  
 Below is a reference list of all endpoints available in the API.  
-Input and output format for all calls is JSON.  
+**Input and output format for all calls is JSON.**  
 {base_url} is the domain, on which MotoWebUI is deployed, followed by a port (3000 by default).  
 
 
