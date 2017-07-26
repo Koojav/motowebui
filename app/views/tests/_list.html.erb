@@ -32,7 +32,7 @@
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"  data-toggle="tooltip" data-placement="right" title="<%= test.name %>"></td>
             <td class="col-xs-8"><%= link_to test.display_name, suite_run_test_path(@run.suite_id, @run.id, test.id) %></td>
-            <td class="col-xs-2"><%= test.start_time.to_s(:db) %></td>
+            <td class="col-xs-2"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
             <td><%= test.display_duration %></td>
             <td class="col-xs-2">
               <div class="btn-group" role="group" style="width: 70%">

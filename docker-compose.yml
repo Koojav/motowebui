@@ -14,7 +14,7 @@ services:
       - MWUI_DB_PORT=3306
       - MWUI_DB_USERNAME=motowebui_user
       - MWUI_DB_PASSWORD=motowebui_password
-      - MWUI_MAX_RUNS_IN_SUITE=0 # maximum amount of Test Runs in Test Suite, oldest will be deleted, 0 - no limit
+      - MWUI_MAX_RUNS_IN_SUITE=0
       - SECRET_KEY_BASE=change_value_of_this_key_as_soon_as_you_realize_its_here_and_doesnt_look_safe
     depends_on:
       - motowebui_db

@@ -14,7 +14,7 @@
       <% @runs.each do |run| %>
           <tr>
             <td class="col-xs-6"><%= link_to run.name, suite_run_path(run.suite.id, run.id) %></td>
-            <td class="col-xs-2"><%= run.start_time.to_s(:db) %></td>
+            <td class="col-xs-2"><%= run.start_time ? run.start_time.to_s(:db) : 0 %></td>
             <td><%= run.display_duration %></td>
 
             <td class="col-xs-2" >
