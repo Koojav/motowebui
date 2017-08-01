@@ -102,11 +102,8 @@
       "<'row'<'col-sm-12'p>>",
       select: {
           style:    'os',
-          // I had to ignore column with result buttons in process of selecting rows since
-          // it introduced problems with setting status for multiple rows with one button
-          // but ofc :not in selector didn't work properly for some reason so I had to list
-          // valid columns instead of ignoring invalid one
-          selector: 'td:nth-of-type(1), td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4)'
+          // ignoring certain cells with controls since they interfered with selection etc.
+          selector: 'td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4)'
       },
       paging: <%= @tests.length > 25 %>,
       pageLength: 25,
@@ -148,8 +145,9 @@
               text: 'Expand selected',
               action : function(e) {
                   table.rows({selected:true}).every( function ( rowIdx, tableLoop, rowLoop ) {
-                      var data = this.data();
-                      console.log(data);
+                      var testId = table.row(rowIdx).node().getAttribute('data-test-id');
+                      var tr = $("tr[data-test-id='" + testId + "']");
+                      toggleRow(tr);
                   } );
               }
           }
@@ -165,6 +163,7 @@
 
     // Toggle row - expanded/folded
     function toggleRow(tr) {
+
       var row = table.row(tr);
 
       if ( row.child.isShown() )
