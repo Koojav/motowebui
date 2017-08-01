@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   namespace :api do
     resources :suites,      defaults: {format: :json} do
       resources :runs,      defaults: {format: :json} do
+
+        resource :batchresults, defaults: {format: :json}, only: [:update]
+
         resources :tests,   defaults: {format: :json} do
           # Friendly reminder 'resource' not 'resources' - singular resource
           resource :logs,   defaults: {format: :json}

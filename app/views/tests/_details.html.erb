@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td><b>Started</b></td>
-        <td><%= @test.start_time.to_s(:db) %></td>
+        <td><%= @test.start_time ? @test.start_time.to_s(:db) : 0 %></td>
       </tr>
       <tr>
         <td><b>Duration</b></td>

@@ -6,12 +6,6 @@
 
 <div class="box box-primary">
   <div class="box-body">
-    <div id="batch-buttons" style="display: none">
-      <label>Set selected as:</label>
-      <button>Pass</button>
-      <button>Error</button>
-      <button>Fail</button>
-    </div>
 
     <!-- Table will be invisible until datatables is initialized and finishes drawing !-->
     <table id="testsDataTable" class="table table-hover" style="display: none">
@@ -92,10 +86,7 @@
           testIDs.push(button.data('test-id'));
         }
 
-        $.each(testIDs, function(index, value)
-        {
-          changeTestResult(value, newResultID);
-        });
+        changeTestsResult(testIDs, newResultID);
       });
 
       $(this).show();
@@ -104,9 +95,21 @@
     // Initialize datatable
     var table = $('#testsDataTable').DataTable(
     {
+      //dom: 'Blftp',
+      dom:
+      "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-12'p>>",
+      select: {
+          style:    'os',
+          // I had to ignore column with result buttons in process of selecting rows since
+          // it introduced problems with setting status for multiple rows with one button
+          // but ofc :not in selector didn't work properly for some reason so I had to list
+          // valid columns instead of ignoring invalid one
+          selector: 'td:nth-of-type(1), td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(4)'
+      },
       paging: <%= @tests.length > 25 %>,
       pageLength: 25,
-      info: false,
       lengthMenu: [10, 25, 50, 100],
       columnDefs: [
         { targets: ['column-result'], data: function(row, type, set, meta){
@@ -128,29 +131,41 @@
           return row.val;
         }}
       ],
-      order: [[1, 'asc']]
+      order: [[1, 'asc']],
+      buttons: [
+          {
+              extend: 'selectAll',
+              className: 'selectall',
+              text: 'Select visible',
+              action : function(e) {
+                  e.preventDefault();
+                  table.rows().deselect();
+                  table.rows({ page: 'current', search: 'applied'}).select();
+              }
+          },
+          'selectNone',
+          {
+              text: 'Expand selected',
+              action : function(e) {
+                  table.rows({selected:true}).every( function ( rowIdx, tableLoop, rowLoop ) {
+                      var data = this.data();
+                      console.log(data);
+                  } );
+              }
+          }
+      ]
     }
     );
-
-    // Clicking on rows toggles selection (expanding child rows)
-    $('#testsDataTable tbody').on( 'click', 'tr', function () {
-      var target = $(event.target);
-      var tr = $(this).closest('tr');
-      var tb = $(this).closest('table');
-
-      // Bootstrap doesn't recognize child rows in DataTables out of the box thus it's required
-      // to manually mark them, for example with 'row-child' class to be able to assign custom styles (no hover) and
-      // recognize them in event flow (disable selection of child rows by clicking on them)
-      if (target.is('td') && !target.hasClass( 'details-control' ) && !tr.hasClass('row-child') && !tb.hasClass('row-child-table'))
-      {
-        tr.toggleClass('selected');
-      }
-    });
 
     // Add event listener for opening and closing details
     $('#testsDataTable tbody').on('click', 'td.details-control', function () {
       var tr = $(this).closest('tr');
-      var row = table.row( tr );
+      toggleRow(tr);
+    });
+
+    // Toggle row - expanded/folded
+    function toggleRow(tr) {
+      var row = table.row(tr);
 
       if ( row.child.isShown() )
       {
@@ -170,7 +185,7 @@
         $(this).removeClass('fa fa-fw fa-chevron-circle-up');
         $(this).addClass('fa fa-fw fa-chevron-circle-down');
       }
-    });
+    }
 
     // Show additional row, with details of a specified test
     function showTestDescription(tr)
@@ -223,46 +238,48 @@
       });
     }
 
-    // Changes result_id for specified test
-    function changeTestResult(test_id, result_id)
+    // Changes result_id for specified tests
+    function changeTestsResult(test_ids, result_id)
     {
       // Send changed Result
       $.ajax
       (
           {
             type: "PUT",
-            //url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + button.data('test-id'),
-            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + test_id,
+            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/batchresults",
             contentType: "application/json",
             dataType: "json",
-            //data: JSON.stringify({result_id: $(this).data('result-id')})
-            data: JSON.stringify({result_id: result_id})
+            data: JSON.stringify({test_ids: test_ids, result_id: result_id})
           }).done(function (response)
       {
         // List all possible results and their matching styles, so button can be re-styled once result is set
         var result_styles = []
         <% Result.all.each do |result| %>
-        result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
+          result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
         <% end %>
 
-        var button = $('.btn-result[data-test-id="'+ test_id +'"]');
-
-        // Update data on button which represents current result
-        button.data('result-id', response.result_id);
-
-        // Re-style button to show display new result
-        button.removeClass();
-        button.addClass("btn-result btn btn-xs btn-block dropdown-toggle ");
-
-        $.each(result_styles, function(index)
-        {
-          if ($(this)[0] == response.result_id)
+          $.each(response, function(index)
           {
-            button.html($(this)[1] + ' <span class="caret"/>');
-            button.addClass($(this)[2]);
-            return false; // needs to return false in order to "break" from jQuery "each"...
-          }
-        });
+            var button = $('.btn-result[data-test-id="'+ response[index].id +'"]');
+            var result_id = response[index].result_id
+
+            // Update data on button which represents current result
+            button.data('result-id', result_id);
+
+            // Re-style button to show display new result
+            button.removeClass();
+            button.addClass("btn-result btn btn-xs btn-block dropdown-toggle ");
+
+            $.each(result_styles, function(index)
+            {
+              if ($(this)[0] == result_id)
+              {
+                  button.html($(this)[1] + ' <span class="caret"/>');
+                  button.addClass($(this)[2]);
+                  return false; // needs to return false in order to "break" from jQuery "each"...
+              }
+            });
+          });
       });
     }
   });
