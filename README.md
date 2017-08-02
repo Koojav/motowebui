@@ -211,6 +211,15 @@ Below is a reference list of all endpoints available in the API.
 **Returns:** Test Suite with provided ID.
 
 ---
+ 
+`[PUT] {base_url}/api/suites/SUITE_ID/batchtesters`  
+**Payload:** 
+
+* run_ids `Array` - Array of Run IDs which should have their tester modified.
+* tester_id `Integer` - ID of tester which will be assigned to all provided Runs.
+**Returns:** Collection of modified Runs.
+
+---
 
 `[DELETE] {base_url}/api/suites/SUITE_ID`  
 **Payload:** None  
@@ -257,7 +266,7 @@ Below is a reference list of all endpoints available in the API.
 
 ---
  
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs`  
+`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID`  
 **Payload:** None  
 **Returns:** Test Run with provided ID, which has just been deleted. Removal of Tests and Logs aggregated by this Test Run will be automatically chained and executed.  
 
