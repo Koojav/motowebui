@@ -248,6 +248,15 @@ Below is a reference list of all endpoints available in the API.
 
 ---
  
+`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/batchresults`  
+**Payload:** 
+
+* test_ids `Array` - Array of Test IDs which should have their result modified.
+* result_id `Integer` - ID of result which will be assigned to all provided Tests.
+**Returns:** Collection of modified Tests.
+
+---
+ 
 `[DELETE] {base_url}/api/suites/SUITE_ID/runs`  
 **Payload:** None  
 **Returns:** Test Run with provided ID, which has just been deleted. Removal of Tests and Logs aggregated by this Test Run will be automatically chained and executed.  
