@@ -51,11 +51,11 @@
 
       <div class="col-md-2" valign="middle">
         <ul class="chart-legend clearfix">
-          <li><i class="fa fa-circle-o text-aqua"></i> Running</li>
-          <li><i class="fa fa-circle-o text-green"></i> Pass</li>
-          <li><i class="fa fa-circle-o text-red"></i> Fail</li>
-          <li><i class="fa fa-circle-o text-red"></i> Error</li>
-          <li><i class="fa fa-circle-o text-yellow"></i> Skip</li>
+          <li><i class="fa fa-circle-o text-aqua"></i> Running: <%= @run.stats_tests_running %></li>
+          <li><i class="fa fa-circle-o text-green"></i> Pass: <%= @run.stats_tests_pass %></li>
+          <li><i class="fa fa-circle-o text-red"></i> Fail: <%= @run.stats_tests_error %></li>
+          <li><i class="fa fa-circle-o text-red"></i> Error: <%= @run.stats_tests_fail %></li>
+          <li><i class="fa fa-circle-o text-yellow"></i> Skip: <%= @run.stats_tests_skip %></li>
         </ul>
       </div>
 
