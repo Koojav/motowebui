@@ -9,14 +9,15 @@ Rails.application.routes.draw do
   get '/suites/:suite_id', to: redirect('/suites/%{suite_id}/runs')
   get '/suites/:suite_id/runs/:run_id/tests', to: redirect('/suites/%{suite_id}/runs/%{run_id}')
 
+
+  # Friendly reminder 'resource' differs from 'resources'
+
   namespace :api do
     resources :suites,      defaults: {format: :json} do
+      resource :batchtesters, defaults: {format: :json}, only: [:update]
       resources :runs,      defaults: {format: :json} do
-
         resource :batchresults, defaults: {format: :json}, only: [:update]
-
         resources :tests,   defaults: {format: :json} do
-          # Friendly reminder 'resource' not 'resources' - singular resource
           resource :logs,   defaults: {format: :json}
         end
       end

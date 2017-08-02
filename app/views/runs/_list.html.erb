@@ -12,7 +12,7 @@
       </thead>
       <tbody>
       <% @runs.each do |run| %>
-          <tr>
+          <tr data-run-id="<%= run.id %>">
             <td class="col-xs-6"><%= link_to run.name, suite_run_path(run.suite.id, run.id) %></td>
             <td class="col-xs-2"><%= run.start_time ? run.start_time.to_s(:db) : 0 %></td>
             <td><%= run.display_duration %></td>
@@ -20,8 +20,7 @@
             <td class="col-xs-2" >
               <div class="btn-group" role="group" style="width: 70%">
                 <button type="button" class="btn-tester btn btn-xs btn-block dropdown-toggle"
-                          data-toggle="dropdown"
-                          data-run-id="<%= run.id %>">
+                          data-toggle="dropdown">
                 <%= run.tester.name %> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu tester-dropdown-menu">
@@ -84,32 +83,80 @@
       // Convert all list-based dropdown to <select>-like menus
       $(".tester-dropdown-menu li a").on('click.runsdt', function ()
       {
-        var button = $(this).parents('.dropdown-menu').siblings('button');
-        var tester_name = $(this).data('tester-name');
+        var testerName = $(this).data('tester-name');
+        var runIds = [];
+        var newTesterId = $(this).data('tester-id');
 
-        $.ajax
-        (
-            {
-              type: "PUT",
-              url: "/api/suites/<%= params[:suite_id] || params[:id] %>/runs/" + button.data('run-id'),
-              contentType: "application/json",
-              dataType: "json",
-              data: JSON.stringify({tester_id: $(this).data('tester-id')})
-            }).done(function (response)
+        if (table.rows('.selected').data().length > 0)
         {
-          button.html(tester_name + ' <span class="caret"/>');
-        });
+          table.rows('.selected').every( function ( rowIdx, tableLoop, rowLoop )
+          {
+            runIds.push(table.row(rowIdx).node().getAttribute('data-run-id'));
+          });
+        }
+        else
+        {
+          runIds.push($(this).parents('tr').data('run-id'));
+        }
+          console.log(runIds);
+          console.log(newTesterId);
+        changeRunsTester(runIds, newTesterId);
       });
 
       $(this).show();
     });
 
-
-    $('#runsDataTable').DataTable(
+    function changeRunsTester(runIds, testerId)
     {
+      var testers = []
+      <% Tester.all.each do |tester| %>
+        testers.push([<%= tester.id %>,"<%= tester.name %>"]);
+      <% end %>
+
+      $.ajax
+      (
+        {
+          type: "PUT",
+          url: "/api/suites/<%= params[:suite_id] || params[:id] %>/batchtesters",
+          contentType: "application/json",
+          dataType: "json",
+          data: JSON.stringify({run_ids: runIds, tester_id: testerId})
+      }).done(function (response)
+      {
+        // Update data on all buttons
+        $.each(response, function(index)
+        {
+          console.log(response[index]);
+          var button = $('tr[data-run-id="'+ response[index].id +'"]').find('.btn-tester');
+
+          console.log(button);
+
+          $.each(testers, function(index)
+          {
+              if ($(this)[0] == testerId)
+              {
+                  button.html($(this)[1] + ' <span class="caret"/>');
+                  return false; // needs to return false in order to "break" from jQuery "each"...
+              }
+          });
+        });
+      });
+    }
+
+    // Initialize datatable
+    var table = $('#runsDataTable').DataTable(
+    {
+      dom:
+      "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-12'p>>",
+      select: {
+          style:    'os',
+          // ignoring certain cells with controls since they interfered with selection etc.
+          selector: 'td:nth-of-type(1), td:nth-of-type(2), td:nth-of-type(3), td:nth-of-type(5)'
+      },
       paging: <%= @runs.length > 25 %>,
       pageLength: 25,
-      info: false,
       lengthMenu: [ 10, 25, 50, 100 ],
       columnDefs: [
         { targets: ['assignee-column'], data: function(row, type, set, meta){
@@ -131,7 +178,20 @@
           return row.val;
         }}
       ],
-      order: [[1, 'desc']]
+      order: [[1, 'desc']],
+      buttons: [
+          {
+              extend: 'selectAll',
+              className: 'selectall',
+              text: 'Select visible',
+              action : function(e) {
+                  e.preventDefault();
+                  table.rows().deselect();
+                  table.rows({ page: 'current', search: 'applied'}).select();
+              }
+          },
+          'selectNone'
+      ]
     });
 
   });
