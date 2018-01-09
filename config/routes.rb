@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resource :directories, only: [:index, :show]
+
   resources :suites,    only: [:index] do
     resources :runs,    only: [:index, :show]  do
       resources :tests, only: [:show]

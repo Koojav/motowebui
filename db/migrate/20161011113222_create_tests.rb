@@ -10,7 +10,7 @@ class CreateTests < ActiveRecord::Migration[5.0]
       t.text        :ticket_urls
       t.string      :tags
       t.text        :description
-      t.references  :run, foreign_key: true
+      t.references  :directory, foreign_key: {on_delete: :cascade}
     end
   end
 end

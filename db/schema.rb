@@ -12,6 +12,12 @@
 
 ActiveRecord::Schema.define(version: 20161111114000) do
 
+  create_table "directories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
+    t.string  "path",         null: false
+    t.integer "directory_id"
+    t.index ["directory_id"], name: "index_directories_on_directory_id", using: :btree
+  end
+
   create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.text    "text",    limit: 4294967295
     t.integer "test_id"
@@ -61,14 +67,15 @@ ActiveRecord::Schema.define(version: 20161111114000) do
     t.text     "ticket_urls",   limit: 65535
     t.string   "tags"
     t.text     "description",   limit: 65535
-    t.integer  "run_id"
+    t.integer  "directory_id"
+    t.index ["directory_id"], name: "index_tests_on_directory_id", using: :btree
     t.index ["result_id"], name: "index_tests_on_result_id", using: :btree
-    t.index ["run_id"], name: "index_tests_on_run_id", using: :btree
   end
 
+  add_foreign_key "directories", "directories", on_delete: :cascade
   add_foreign_key "logs", "tests"
   add_foreign_key "runs", "suites"
   add_foreign_key "runs", "testers"
+  add_foreign_key "tests", "directories", on_delete: :cascade
   add_foreign_key "tests", "results"
-  add_foreign_key "tests", "runs"
 end
