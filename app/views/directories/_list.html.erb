@@ -1,0 +1,19 @@
+<div class="box box-primary">
+
+  <div class="box-header">
+    <h3 class="box-title"><%= @directory.path %></h3>
+  </div>
+
+  <div class="box-body">
+
+
+    <table>
+    <% @directory.subdirectories.each do |subdir| %>
+        <tr>
+          <td class="col-xs-12"><%= link_to subdir.path, directory_path(subdir.id) %></td>
+        </tr>
+    <% end %>
+    </table>
+
+  </div>
+</div>

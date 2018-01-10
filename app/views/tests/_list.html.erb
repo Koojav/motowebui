@@ -5,10 +5,15 @@
 </style>
 
 <div class="box box-primary">
+
+  <div class="box-header">
+    <h3 class="box-title">Tests</h3>
+  </div>
+
   <div class="box-body">
 
     <!-- Table will be invisible until datatables is initialized and finishes drawing !-->
-    <table id="testsDataTable" class="table table-hover" style="display: none">
+    <table id="testsDataTable" class="table table-hover">
       <thead>
       <tr>
         <th></th>
@@ -25,7 +30,8 @@
         @tests.each do |test| %>
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"  data-toggle="tooltip" data-placement="right" title="<%= test.name %>"></td>
-            <td class="col-xs-8"><%= link_to test.display_name, suite_run_test_path(@run.suite_id, @run.id, test.id) %></td>
+            <td class="col-xs-8"><%= link_to test.display_name, test_path(test.id) %></td>
+            <td class="col-xs-8"><%= test.display_name %></td>
             <td class="col-xs-2"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
             <td><%= test.display_duration %></td>
             <td class="col-xs-2">

@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20161111114000) do
   end
 
   add_foreign_key "directories", "directories", on_delete: :cascade
-  add_foreign_key "logs", "tests"
+  add_foreign_key "logs", "tests", on_delete: :cascade
   add_foreign_key "runs", "suites"
   add_foreign_key "runs", "testers"
   add_foreign_key "tests", "directories", on_delete: :cascade

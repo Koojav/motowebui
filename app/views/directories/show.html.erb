@@ -1,1 +1,9 @@
-<%= render 'directories/details' %>
+
+<% if @directory.subdirectories.any? %>
+  <%= render 'directories/list' %>
+<% end %>
+
+
+<% if @directory.tests.any? %>
+  <%= render 'tests/list' %>
+<% end %>
