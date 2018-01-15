@@ -5,9 +5,10 @@ Rails.application.routes.draw do
 
   get '/directories', to: redirect('/directories/0')
   get '/', to: redirect('/directories/0')
+  get '/api/directories/:id/sub', controller: 'api/directories', to: 'api/directories#index'
 
   namespace :api do
-    resources :directories, defaults: {format: :json}
+    resources :directories, only: [:create, :show, :destroy], defaults: {format: :json}
     resources :tests,       defaults: {format: :json}
     resources :logs,        defaults: {format: :json}
     resources :testers,     defaults: {format: :json}

@@ -1,17 +1,29 @@
-class Api::RunsController < ApplicationController
+class Api::DirectoriesController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
   def index
-    render json: Directory.where(directory_id: params[:parent_id])
+    render json: Directory.find(params[:id]).subdirectories
   end
 
   def create
-    # Must be able to parse single and array of items
-  end
+    if params.has_key?(:directory)
+      directories = [params[:directory]]
+    elsif params.has_key?(:directories)
+      directories = params[:directories]
+    else
+      raise "No 'directory' or 'directories' keys found in request parameters."
+    end
 
-  def update
-    # Must be able to parse single and array of items
+    created_directories = []
+
+    directories.each do |directory|
+      standardized_path = '/' + directory[:path].split('/').select {|p| !p.empty?}.join('/')
+
+      created_directories << Directory.create_tree(standardized_path)
+    end
+
+    render json: created_directories
   end
 
   def show

@@ -13,10 +13,10 @@ end
 if Directory.all.empty?
   Directory.create([
     {id: 0, path: '/'},
-    {id: 1, path: '/level1', directory_id: 0},
-    {id: 2, path: '/level1/level2/', directory_id: 1},
-    {id: 3, path: '/level1/level2/level3A', directory_id: 2},
-    {id: 4, path: '/level1/level2/level3B', directory_id: 2},
+    {id: 1, path: '/level1', parent_id: 0},
+    {id: 2, path: '/level1/level2/', parent_id: 1},
+    {id: 3, path: '/level1/level2/level3A', parent_id: 2},
+    {id: 4, path: '/level1/level2/level3B', parent_id: 2},
   ])
 end
 

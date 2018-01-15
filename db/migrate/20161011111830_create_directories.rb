@@ -3,7 +3,7 @@ class CreateDirectories < ActiveRecord::Migration[5.0]
 
     create_table :directories do |t|
       t.string :path, null: false
-      t.references :directory, foreign_key: {on_delete: :cascade}
+      t.references :parent, index: true, foreign_key: { to_table: :directories, on_delete: :cascade }
     end
 
   end
