@@ -7,6 +7,9 @@ class Directory < ApplicationRecord
   end
 
   def self.create_tree(path)
+    # Standardize path first so each one starts with / and ends without one
+    path = '/' + path.split('/').select {|p| !p.empty?}.join('/')
+
     directory = Directory.find_by_path(path)
 
     if directory

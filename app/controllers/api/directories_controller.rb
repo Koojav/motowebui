@@ -18,9 +18,7 @@ class Api::DirectoriesController < ApplicationController
     created_directories = []
 
     directories.each do |directory|
-      standardized_path = '/' + directory[:path].split('/').select {|p| !p.empty?}.join('/')
-
-      created_directories << Directory.create_tree(standardized_path)
+      created_directories << Directory.create_tree(directory[:path])
     end
 
     render json: created_directories
