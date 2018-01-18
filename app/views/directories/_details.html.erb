@@ -1,0 +1,59 @@
+<div class="box box-primary">
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-12">
+
+        <table class="table">
+          <tbody>
+          <tr>
+            <td class="col-md-1"><b>Path</b></td>
+            <td><%= @directory.path %></td>
+          </tr>
+          <tr>
+            <td class="col-md-1"><b>Assignee</b></td>
+            <td>
+              <div class="btn-group" role="group">
+              <button type="button" class="btnTester btn btn-xs btn-block dropdown-toggle"
+                      data-toggle="dropdown">
+                <%= @directory.tester.name %> <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu tester-dropdown-menu">
+                <% testers_all.each do |tester| %>
+                    <li><a data-tester-id="<%= tester.id %>" data-tester-name="<%= tester.name %>"><%= tester.name %></a></li>
+                <% end %>
+              </ul>
+            </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  $(document).ready(function ()
+  {
+    $(".tester-dropdown-menu li a").click(function ()
+    {
+      var button = $(this).parents('.dropdown-menu').siblings('button');
+      var tester_name = $(this).data('tester-name');
+
+      $.ajax
+      (
+          {
+            type: "PUT",
+            url: "/api/directories/<%= params[:id] %>",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({tester_id: $(this).data('tester-id')})
+          }).done(function (response)
+      {
+        button.html(tester_name + ' <span class="caret"/>');
+      });
+    });
+
+  });
+</script>

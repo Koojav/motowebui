@@ -1,7 +1,7 @@
 class Test < ApplicationRecord
   belongs_to :directory
   belongs_to :result
-  has_one    :log, dependent: :delete
+  has_one    :log
 
   # after_commit :mark_run_as_dirty
   #

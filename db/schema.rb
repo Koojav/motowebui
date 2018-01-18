@@ -13,9 +13,19 @@
 ActiveRecord::Schema.define(version: 20161111114000) do
 
   create_table "directories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
-    t.string  "path",      null: false
+    t.text    "path",                limit: 65535,                 null: false
+    t.string  "name",                                              null: false
     t.integer "parent_id"
+    t.integer "tester_id",                         default: 1
+    t.boolean "stats_dirty",                       default: false
+    t.integer "stats_tests_all",                   default: 0
+    t.integer "stats_tests_pass",                  default: 0
+    t.integer "stats_tests_error",                 default: 0
+    t.integer "stats_tests_fail",                  default: 0
+    t.integer "stats_tests_skip",                  default: 0
+    t.integer "stats_tests_running",               default: 0
     t.index ["parent_id"], name: "index_directories_on_parent_id", using: :btree
+    t.index ["tester_id"], name: "index_directories_on_tester_id", using: :btree
   end
 
   create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
@@ -73,6 +83,7 @@ ActiveRecord::Schema.define(version: 20161111114000) do
   end
 
   add_foreign_key "directories", "directories", column: "parent_id", on_delete: :cascade
+  add_foreign_key "directories", "testers"
   add_foreign_key "logs", "tests", on_delete: :cascade
   add_foreign_key "runs", "suites"
   add_foreign_key "runs", "testers"

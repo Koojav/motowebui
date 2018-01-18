@@ -1,14 +1,17 @@
 class Directory < ApplicationRecord
   has_many :directories
   has_many :tests
+  belongs_to :tester
 
   def subdirectories
     Directory.where(parent_id: id)
   end
 
-  def self.create_tree(path)
+  def self.create_tree(path, standardize_path = true)
     # Standardize path first so each one starts with / and ends without one
-    path = '/' + path.split('/').select {|p| !p.empty?}.join('/')
+    if standardize_path
+      path = '/' + path.split('/').select {|p| !p.empty?}.join('/')
+    end
 
     directory = Directory.find_by_path(path)
 
@@ -16,10 +19,12 @@ class Directory < ApplicationRecord
       return directory
     else
       parent_directories = path.split('/').select { |p| !p.empty?}
-      parent_directories.pop
+      directory_name = parent_directories.pop
       parent_path = '/' + parent_directories.join('/')
 
-      Directory.create(path: path, parent_id: Directory.create_tree(parent_path)[:id])
+      Directory.create(path: path,
+                       name: directory_name,
+                       parent_id: Directory.create_tree(parent_path, false)[:id])
     end
 
   end

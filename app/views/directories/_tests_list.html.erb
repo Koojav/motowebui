@@ -15,23 +15,22 @@
     <!-- Table will be invisible until datatables is initialized and finishes drawing !-->
     <table id="testsDataTable" class="table table-hover">
       <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Start time</th>
-        <th>Duration</th>
-        <th class="column-result">Result</th>
-      </tr>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Start time</th>
+          <th>Duration</th>
+          <th class="column-result">Result</th>
+        </tr>
       </thead>
-      <tbody>
 
+      <tbody>
       <%
         result_options = Result.where(manual: true).pluck(:id,:name)
         @tests.each do |test| %>
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"  data-toggle="tooltip" data-placement="right" title="<%= test.name %>"></td>
-            <td class="col-xs-8"><%= link_to test.display_name, test_path(test.id) %></td>
-            <td class="col-xs-8"><%= test.display_name %></td>
+            <td class="col-xs-8"><%= link_to test.display_name, directory_test_path(@directory.id, test.id) %></td>
             <td class="col-xs-2"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
             <td><%= test.display_duration %></td>
             <td class="col-xs-2">
@@ -200,7 +199,7 @@
       (
           {
             type: "GET",
-            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/tests/" + tr.data('test-id'),
+            url: "/api/directories/<%= @directory.id %>/tests/" + tr.data('test-id'),
             contentType: "application/json",
             dataType: "json"
           }).done(function (response)
@@ -250,7 +249,7 @@
       (
           {
             type: "PUT",
-            url: "/api/suites/<%= params[:suite_id] %>/runs/<%= params[:id] %>/batchresults",
+            url: "/api/directories/<%= @directory.id %>/batchresults",
             contentType: "application/json",
             dataType: "json",
             data: JSON.stringify({test_ids: test_ids, result_id: result_id})

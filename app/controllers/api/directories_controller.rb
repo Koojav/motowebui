@@ -2,10 +2,6 @@ class Api::DirectoriesController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
-  def index
-    render json: Directory.find(params[:id]).subdirectories
-  end
-
   def create
     if params.has_key?(:directory)
       directories = [params[:directory]]
@@ -22,6 +18,13 @@ class Api::DirectoriesController < ApplicationController
     end
 
     render json: created_directories
+  end
+
+  def update
+    directory = Directory.find params[:id]
+    input = JSON.parse(request.body.read)
+    directory.update input
+    render json: directory
   end
 
   def show
