@@ -1,5 +1,5 @@
 class DirectoriesController < ApplicationController
-  helper_method :testers_all, :subdirectories
+  helper_method :testers_all, :tests_stats, :subdirectories
 
   def index
     show
@@ -18,6 +18,21 @@ class DirectoriesController < ApplicationController
 
   def testers_all
     @testers_all ||= Tester.all
+  end
+
+  # @return [Array]
+  #    [0] running
+  #    [1] pass
+  #    [2] error
+  #    [3] fail
+  #    [4] skip
+  def tests_stats
+    @tests_stats ||= [5, 15, 3, 1, 4]
+        # [@directory.stats_tests_running,
+        #               @directory.stats_tests_pass,
+        #               @directory.stats_tests_error,
+        #               @directory.stats_tests_fail,
+        #               @directory.stats_tests_skip]
   end
 
 end
