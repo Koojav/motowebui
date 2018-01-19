@@ -5,21 +5,17 @@
 </style>
 
 <div class="box box-primary">
-
-  <div class="box-header">
-    <h3 class="box-title">Tests</h3>
-  </div>
-
   <div class="box-body">
 
     <!-- Table will be invisible until datatables is initialized and finishes drawing !-->
     <table id="testsDataTable" class="table table-hover" style="display: none">
       <thead>
         <tr>
-          <th></th>
+          <th class="column-display-details"></th>
           <th>Name</th>
           <th>Start time</th>
           <th>Duration</th>
+          <th>Assignee</th>
           <th class="column-result">Result</th>
         </tr>
       </thead>
@@ -30,11 +26,15 @@
         @tests.each do |test| %>
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"  data-toggle="tooltip" data-placement="right" title="<%= test.name %>"></td>
-            <td class="col-xs-8"><%= link_to test.display_name, directory_test_path(@directory.id, test.id) %></td>
-            <td class="col-xs-2"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
-            <td><%= test.display_duration %></td>
+            <td class="col-xs-7"><%= link_to test.display_name, directory_test_path(@directory.id, test.id) %></td>
+            <td class="col-xs-1"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
+            <td class="col-xs-1"><%= test.display_duration %></td>
             <td class="col-xs-2">
+              <%= render partial: 'dropdown_select_tester', locals: { directory_id: test.directory.id, selected_tester_name: test.tester.name} %>
+            </td>
+            <td class="col-xs-1">
               <div class="btn-group" role="group" style="width: 70%">
+
                 <%# style of this button is also modified in jQuery responsible for sending manually changed result to API %>
                 <button type="button" class="btn-result btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"
                         data-toggle="dropdown"
@@ -113,24 +113,32 @@
       pageLength: 25,
       lengthMenu: [10, 25, 50, 100],
       columnDefs: [
-        { targets: ['column-result'], data: function(row, type, set, meta){
-          if (type === 'set')
+        {
+          targets: ['column-result'], data: function(row, type, set, meta)
           {
-            row.val = set;
-            row.val_display = set;
-            row.val_filter = $(set).find('.btn-result').text();
-          }
-          else if (type === 'display')
-          {
-            return row.val_display
-          }
-          else if (type === 'filter')
-          {
-            return row.val_filter
-          }
+            if (type === 'set')
+            {
+              row.val = set;
+              row.val_display = set;
+              row.val_filter = $(set).find('.btn-result').text();
+            }
+            else if (type === 'display')
+            {
+              return row.val_display
+            }
+            else if (type === 'filter')
+            {
+              return row.val_filter
+            }
 
-          return row.val;
-        }}
+            return row.val;
+          }
+        },
+        {
+            targets: ['column-display-details'],
+            orderable: false,
+            searchable: false
+        }
       ],
       order: [[1, 'asc']],
       buttons: [

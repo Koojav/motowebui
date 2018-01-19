@@ -72,3 +72,38 @@ function prepareDirectoryStatsChart(tests_stats)
     }
 });
 }
+
+
+function batchChangeTester(directoryIds, testerId)
+{
+//     var testers = []
+//         <% Tester.all.each do |tester| %>
+// testers.push([<%= tester.id %>,"<%= tester.name %>"]);
+//       <% end %>
+
+    $.ajax
+    (
+    {
+        type: "PUT",
+        url: "/api/batchtesters",
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({directory_ids: directoryIds, tester_id: testerId})
+    }).done(function (response)
+    {
+        // Update data on all buttons
+        $.each(response, function(index)
+        {
+            var button = $('tr[data-directory-id="'+ response[index].id +'"]').find('.btn-tester');
+
+            $.each(testers, function(index)
+            {
+                if ($(this)[0] == testerId)
+                {
+                    button.html($(this)[1] + ' <span class="caret"/>');
+                    return false; // needs to return false in order to "break" from jQuery "each"...
+                }
+            });
+        });
+    });
+}

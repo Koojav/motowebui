@@ -22,7 +22,6 @@ class Api::TestsController < ApplicationController
     render json: tests
   end
 
-
   def show
     render json: Test.find(params[:id])
   end

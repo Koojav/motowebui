@@ -2,6 +2,7 @@ class Test < ApplicationRecord
   belongs_to :directory
   belongs_to :result
   has_one    :log
+  belongs_to :tester
 
   # after_commit :mark_run_as_dirty
   #
@@ -46,7 +47,6 @@ class Test < ApplicationRecord
     test
   end
 
-  #
   # # Mark Run as dirty whenever a child Test has been modified so when Run is selected
   # # next time it can be validated once with new values based composed from Tests' ones.
   # def mark_run_as_dirty
@@ -54,13 +54,4 @@ class Test < ApplicationRecord
   #   sql = "UPDATE runs SET stats_dirty=1 WHERE runs.id=#{self.run_id};"
   #   ActiveRecord::Base.connection.execute(sql)
   # end
-  #
-  # def self.delete_with_dependencies(test_id)
-  #   tests = Test.where(id: test_id)
-  #   logs = Log.where(test_id: test_id)
-  #
-  #   logs.delete_all
-  #   tests.delete_all
-  # end
-
 end
