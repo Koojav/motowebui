@@ -4,8 +4,8 @@ class Test < ApplicationRecord
   has_one    :log
   belongs_to :tester
 
-  # after_commit :mark_run_as_dirty
-  #
+  # after_commit :mark_tree_as_dirty
+
   def display_duration
     Time.at(duration).utc.strftime('%H:%M:%S')
   end
@@ -47,11 +47,12 @@ class Test < ApplicationRecord
     test
   end
 
-  # # Mark Run as dirty whenever a child Test has been modified so when Run is selected
-  # # next time it can be validated once with new values based composed from Tests' ones.
-  # def mark_run_as_dirty
-  #   # Invoked via pure SQL, not via ORM, in order to avoid triggering callbacks in Run
-  #   sql = "UPDATE runs SET stats_dirty=1 WHERE runs.id=#{self.run_id};"
+  # Mark Directory tree as dirty whenever a child Test has been modified
+  # so when a Directory is selected next time it and its children can be validated just once
+  # with new values based composed from Tests' ones.
+  # def mark_tree_as_dirty
+  #   # Invoked via pure SQL, not via ORM, in order to avoid triggering callbacks in
+  #   sql = "UPDATE directories SET stats_dirty=1 WHERE directories.id IN [#{...}];"
   #   ActiveRecord::Base.connection.execute(sql)
   # end
 end

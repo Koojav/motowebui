@@ -1,7 +1,7 @@
 <div class="box box-primary">
   <div class="box-body">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
 
         <table class="table">
           <tbody>
@@ -15,10 +15,14 @@
               <%= render partial: 'dropdown_select_tester', locals: { directory_id: @directory.id, selected_tester_name: @directory.tester.name} %>
             </td>
           </tr>
+          <tr>
+            <td class="col-md-1"><b>Statistics</b></td>
+            <td><button class="btn btn-sm btn-primary">Get report</button></td>
+          </tr>
           </tbody>
         </table>
       </div>
-
+<!--
       <div class="chart-responsive col-md-2" style="padding-top: 2px">
         <canvas class="directory-stats-chart" style="width: 245px; height: 180px;"></canvas>
       </div>
@@ -33,7 +37,7 @@
           <li><i class="fa fa-circle-o text-yellow"></i>  Skip:     <%= tests_stats[4] %></li>
         </ul>
       </div>
-
+-->
 
     </div>
 

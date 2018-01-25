@@ -7,7 +7,6 @@ class Directory < ApplicationRecord
     Directory.where(parent_id: id)
   end
 
-
   def navigation_path
     if !@navigation_path
       @navigation_path = []
@@ -46,6 +45,16 @@ class Directory < ApplicationRecord
                        parent_id: Directory.create_tree(parent_path, false)[:id])
     end
 
+  end
+
+  def test_statistics
+    stats = tests.select('results.category').joins(:result).group(:category).count(:category)
+
+    subdirectories.each do |dir|
+      stats = stats.merge(dir.test_statistics) {|k, v1, v2| v1 + v2}
+    end
+
+    stats
   end
 
 end
