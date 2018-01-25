@@ -15,7 +15,7 @@ if Result.all.empty?
 end
 
 if Directory.all.empty?
-  Directory.create(path: '/', name: '', id: 0)
+  Directory.create(path: '/', name: '/', id: 0)
   dir3Aid = Directory.create_tree('/level1/level2/level3A')[:id]
   dir3Bid = Directory.create_tree('/level1/level2/level3B')[:id]
 end

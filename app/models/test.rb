@@ -10,7 +10,7 @@ class Test < ApplicationRecord
     Time.at(duration).utc.strftime('%H:%M:%S')
   end
 
-  def display_name(max_length = 80)
+  def display_name(max_length = 140)
     length = name.length
     excess = length - (max_length + 3)
 

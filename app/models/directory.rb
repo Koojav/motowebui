@@ -7,6 +7,25 @@ class Directory < ApplicationRecord
     Directory.where(parent_id: id)
   end
 
+
+  def navigation_path
+    if !@navigation_path
+      @navigation_path = []
+      directory = self
+
+      @navigation_path << directory
+
+      while directory.parent_id
+        directory = Directory.find(directory.parent_id)
+        @navigation_path << directory
+      end
+
+      @navigation_path
+    end
+
+    @navigation_path
+  end
+
   def self.create_tree(path, standardize_path = true)
     # Standardize path first so each one starts with / and ends without one
     if standardize_path

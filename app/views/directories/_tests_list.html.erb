@@ -15,7 +15,6 @@
           <th>Name</th>
           <th>Start time</th>
           <th>Duration</th>
-          <th>Assignee</th>
           <th class="column-result">Result</th>
         </tr>
       </thead>
@@ -26,12 +25,9 @@
         @tests.each do |test| %>
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"  data-toggle="tooltip" data-placement="right" title="<%= test.name %>"></td>
-            <td class="col-xs-7"><%= link_to test.display_name, directory_test_path(@directory.id, test.id) %></td>
+            <td class="col-xs-9"><%= link_to test.display_name, directory_test_path(@directory.id, test.id) %></td>
             <td class="col-xs-1"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
             <td class="col-xs-1"><%= test.display_duration %></td>
-            <td class="col-xs-2">
-              <%= render partial: 'dropdown_select_tester', locals: { directory_id: test.directory.id, selected_tester_name: test.tester.name} %>
-            </td>
             <td class="col-xs-1">
               <div class="btn-group" role="group" style="width: 70%">
 

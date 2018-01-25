@@ -7,7 +7,7 @@
           <tbody>
           <tr>
             <td class="col-md-1"><b>Path</b></td>
-            <td><%= @directory.path %></td>
+            <td><%= render partial: 'shared/nav_path', locals: {navigation_path: @directory.navigation_path} %></td>
           </tr>
           <tr>
             <td class="col-md-1"><b>Assignee</b></td>
