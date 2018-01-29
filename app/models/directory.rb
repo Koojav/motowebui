@@ -47,11 +47,17 @@ class Directory < ApplicationRecord
 
   end
 
-  def test_statistics
+  def test_statistics(seed_collection = true)
     stats = tests.select('results.category').joins(:result).group(:category).count(:category)
 
+    # make sure all categories are included, where ones not present in above result should be initialized with 0
+    if seed_collection
+      seed = Result.all.select(:category).distinct.pluck(:category).product([0]).to_h
+      stats = seed.merge(stats)
+    end
+
     subdirectories.each do |dir|
-      stats = stats.merge(dir.test_statistics) {|k, v1, v2| v1 + v2}
+      stats = stats.merge(dir.test_statistics(false)) {|k, v1, v2| v1 + v2}
     end
 
     stats

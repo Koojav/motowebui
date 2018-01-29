@@ -107,3 +107,41 @@ function batchChangeTester(directoryIds, testerId)
         });
     });
 }
+
+
+function prepareDataTableSubdirectories(paging)
+{
+    $('#dt-subdirectories').on( 'draw.dt', function ()
+    {
+        var table = $('#dt-subdirectories').DataTable({
+            dom:
+            "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12'p>>",
+            select: {
+                style:    'os',
+                // ignoring certain cells with controls since they interfered with selection etc.
+                selector: 'td:nth-of-type(1)'
+            },
+            paging: paging,
+    pageLength: 25,
+    lengthMenu: [10, 25, 50, 100]
+    });
+    });
+
+    $('#dt-subdirectories').show();
+}
+
+
+function prepareDataTableReport()
+{
+
+    $('#dt-report').on( 'draw.dt', function ()
+    {
+        var table = $('#dt-report').DataTable({
+            paging: 0
+        });
+    });
+
+    $('#dt-report').show();
+}

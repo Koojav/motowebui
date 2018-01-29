@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   resources :directories, only: [:show] do
     resources :tests, only: [:show]
+    resource :report, only: [:show]
   end
 
 
