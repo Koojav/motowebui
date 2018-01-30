@@ -1,10 +1,11 @@
 <div class="box box-primary">
   <div class="box-body">
+
     <table id="dt-subdirectories" class="table table-hover" style="display: none">
       <thead>
       <tr>
         <th>Subdirectory</th>
-        <th>Assignee</th>
+        <th class="column-assignee">Assignee</th>
       </tr>
       </thead>
       <tbody>
@@ -15,13 +16,14 @@
           </td>
 
           <td class="col-xs-2" >
-            <%= render partial: 'dropdown_select_tester', locals: { directory_id: subdir.id, selected_tester_name: subdir.tester.name} %>
+            <%= render partial: 'dropdown_select_tester', locals: { directory_id: subdir.id, selected_tester_name: subdir.tester.name, multiple_connected: true} %>
           </td>
 
         </tr>
       <% end %>
       </tbody>
     </table>
+
   </div>
 </div>
 

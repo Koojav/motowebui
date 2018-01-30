@@ -1,5 +1,5 @@
 class DirectoriesController < ApplicationController
-  helper_method :testers_all, :subdirectories
+  helper_method :testers_all, :subdirectories, :manual_results_options
 
   def index
     show
@@ -18,5 +18,9 @@ class DirectoriesController < ApplicationController
 
   def testers_all
     @testers_all ||= Tester.all
+  end
+
+  def manual_results_options
+    @manual_results_options ||= Result.where(manual: true).pluck(:id,:name)
   end
 end

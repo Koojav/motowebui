@@ -30,4 +30,14 @@ class Api::TestsController < ApplicationController
     render json: Test.delete(params[:id])
   end
 
+  def update_multiple
+    test_ids = params[:test_ids]
+    result_id = params[:result_id]
+
+    Test.where(id: test_ids).update_all(result_id: result_id)
+
+    # Unfortunately updating multiple records via ActiveRecord returns just the amount of rows modified
+    render json: test_ids.map {|id| {id: id, result_id: result_id} }
+  end
+
 end

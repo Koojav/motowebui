@@ -8,7 +8,7 @@
   <div class="box-body">
 
     <!-- Table will be invisible until datatables is initialized and finishes drawing !-->
-    <table id="testsDataTable" class="table table-hover" style="display: none">
+    <table id="dt-test-list" class="table table-hover" style="display: none">
       <thead>
         <tr>
           <th class="column-display-details"></th>
@@ -21,7 +21,6 @@
 
       <tbody>
       <%
-        result_options = Result.where(manual: true).pluck(:id,:name)
         @tests.each do |test| %>
           <tr data-test-id="<%= test.id %>">
             <td class="details-control fa fa-fw fa-chevron-circle-up"  data-toggle="tooltip" data-placement="right" title="<%= test.name %>"></td>
@@ -29,7 +28,7 @@
             <td class="col-xs-1"><%= test.start_time ? test.start_time.to_s(:db) : 0 %></td>
             <td class="col-xs-1"><%= test.display_duration %></td>
             <td class="col-xs-1">
-              <div class="btn-group" role="group" style="width: 70%">
+              <div class="btn-group" role="group" style="width: 100%">
 
                 <%# style of this button is also modified in jQuery responsible for sending manually changed result to API %>
                 <button type="button" class="btn-result btn btn-xs btn-block dropdown-toggle <%= test.result.display_style_btn %>"
@@ -40,7 +39,7 @@
                 </button>
                 <ul class="dropdown-menu result-dropdown-menu" >
 
-                  <% result_options.each do |result_option| %>
+                  <% manual_results_options.each do |result_option| %>
                       <li><a data-result-id="<%= result_option[0] %>"><%= result_option[1] %></a></li>
                   <% end %>
                 </ul>
@@ -56,9 +55,11 @@
 <script>
   $(document).ready(function ()
   {
+    var dtTestList = $('#dt-test-list');
+
     // When DataTable is redrawn some fancier elements, like status buttons, require some additional setup
     // to retain their functionality
-    $('#testsDataTable').on( 'draw.dt', function ()
+    dtTestList.on( 'draw.dt', function ()
     {
       // Clear selection whenever user redraws the table (filtering, searching, pagination)
       $.each($('table tr[class~="selected"]'), function(index, value)
@@ -66,35 +67,37 @@
         $(value).toggleClass('selected');
       });
 
-      $(".result-dropdown-menu li a").off('click.testsdt');
-      $(".result-dropdown-menu li a").on('click.testsdt', function ()
+      var dropdownOption = $(".result-dropdown-menu li a");
+
+      dropdownOption.off('click.testsdt');
+      dropdownOption.on('click.testsdt', function ()
       {
         // each element represents a pair: test_id, result_id
-        var testIDs = [];
-        var newResultID = $(this).data('result-id');
+        var testIds = [];
+        var newResultId = $(this).data('result-id');
 
         if (table.rows('.selected').data().length > 0)
         {
           table.rows('.selected').every( function ( rowIdx, tableLoop, rowLoop ) {
             var buttonGroup = this.data()['val'];
             var button = $(buttonGroup).find('button');
-            testIDs.push(button.data('test-id'));
+            testIds.push(button.data('test-id'));
           } );
         }
         else
         {
           var button = $(this).parents('.dropdown-menu').siblings('button');
-          testIDs.push(button.data('test-id'));
+          testIds.push(button.data('test-id'));
         }
 
-        changeTestsResult(testIDs, newResultID);
+        changeTestsResult(testIds, newResultId);
       });
 
       $(this).show();
     } );
 
     // Initialize datatable
-    var table = $('#testsDataTable').DataTable(
+    var table = dtTestList.DataTable(
     {
       dom:
       "<'row'<'col-sm-6'lB><'col-sm-6'f>>" +
@@ -164,7 +167,7 @@
     );
 
     // Add event listener for opening and closing details
-    $('#testsDataTable tbody').on('click', 'td.details-control', function () {
+    $('#dt-test-list tbody').on('click', 'td.details-control', function () {
       var tr = $(this).closest('tr');
       toggleRow(tr);
     });
@@ -251,20 +254,19 @@
       // Send changed Result
       $.ajax
       (
-          {
-            type: "PUT",
-            url: "/api/directories/<%= @directory.id %>/batchresults",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify({test_ids: test_ids, result_id: result_id})
-          }).done(function (response)
+        {
+          type: "PUT",
+          url: "/api/tests",
+          contentType: "application/json",
+          dataType: "json",
+          data: JSON.stringify({test_ids: test_ids, result_id: result_id})
+        }).done(function (response)
       {
         // List all possible results and their matching styles, so button can be re-styled once result is set
         var result_styles = []
         <% Result.all.each do |result| %>
           result_styles.push([<%= result.id %>,"<%= result.name %>","<%= result.display_style_btn %>"]);
         <% end %>
-
           $.each(response, function(index)
           {
             var button = $('.btn-result[data-test-id="'+ response[index].id +'"]');
