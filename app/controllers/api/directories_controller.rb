@@ -34,7 +34,9 @@ class Api::DirectoriesController < ApplicationController
     # Unfortunately updating multiple records via ActiveRecord returns just the amount of rows modified
     Directory.where(id: directory_ids).update_all(tester_id: tester_id)
 
-    render json: directory_ids.map {|id| {id: id, tester_id: tester_id} }
+    tester_name = Tester.where(id: tester_id).pluck(:name)[0]
+
+    render json: directory_ids.map {|id| {id: id, tester_id: tester_id, tester_name: tester_name} }
   end
 
   def show
