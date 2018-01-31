@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20161111114000) do
     t.string  "name",                                null: false
     t.integer "parent_id"
     t.integer "tester_id",               default: 1
+    t.index ["name"], name: "index_directories_on_name", using: :btree
     t.index ["parent_id"], name: "index_directories_on_parent_id", using: :btree
     t.index ["tester_id"], name: "index_directories_on_tester_id", using: :btree
   end
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20161111114000) do
     t.string   "tags"
     t.text     "description",   limit: 65535
     t.index ["directory_id"], name: "index_tests_on_directory_id", using: :btree
+    t.index ["name"], name: "index_tests_on_name", using: :btree
     t.index ["result_id"], name: "index_tests_on_result_id", using: :btree
     t.index ["tester_id"], name: "index_tests_on_tester_id", using: :btree
   end
