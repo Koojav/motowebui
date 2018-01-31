@@ -4,7 +4,7 @@ class Api::MotoresultsController < ApplicationController
 
   def create
 
-    if !params[:tests] || !params[:path]
+    if !params[:tests] || !params[:path] || !params[:tester_id]
       return head(:bad_request)
     end
 
