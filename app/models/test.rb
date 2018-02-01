@@ -21,43 +21,30 @@ class Test < ApplicationRecord
     name
   end
 
-  def self.create_uniq_in_dir(directory_id, test_data)
-    # directory = Directory.find(directory_id)
-    # test = directory.tests.find_by(name: test_data[:name].downcase)
-    #
-    # # If it did exist - store it's ID and destroy it
-    # if test
-    #   # Store Test's ID so once it's created anew its URL will still point to the same object
-    #   stored_id = test.id
-    #
-    #   # Deleting test also deletes attached Log
-    #   Test.delete(stored_id)
-    # end
-    #
-    # # Create new Test with data provided in input
-    # test = Test.new(test_data)
-    # test.directory = directory
-    #
-    # if stored_id
-    #   test.id = stored_id
-    # end
-    #
-    # test.save!
-    #
-    # test
+  def self.create_uniq_in_dir(tests_data, directory_id)
+    updated_tests = []
+    created_tests = []
+    create_data = []
 
-    test = Test.find_by(directory_id: directory_id, name: test_data[:name].downcase)
+    tests_data.each do |test_data|
+      test = Test.find_by(directory_id: directory_id, name: test_data[:name].downcase)
 
-    if test
-      test.update(test_data)
-    else
-      test = Test.new(test_data)
-      test.directory_id = directory_id
+      # Update if exists
+      if test
+        updated_tests << test.update(test_data)
+      # or add to a collection which will be used to create all new at the same time
+      else
+        test_data[:directory_id] = directory_id
+        create_data << test_data
+      end
+
     end
 
-    test.save!
+    if !create_data.empty?
+      created_tests = Test.create(create_data)
+    end
 
-    test
+    created_tests + updated_tests
   end
 
   # Mark Directory tree as dirty whenever a child Test has been modified

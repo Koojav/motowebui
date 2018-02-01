@@ -8,17 +8,12 @@ class Api::MotoresultsController < ApplicationController
       return head(:bad_request)
     end
 
-    directory = Directory.create_tree(params[:path])
-    directory_id = directory[:id]
+    tests_data = params[:tests].map! { |test_data| test_data.to_unsafe_h.symbolize_keys }
+    directory     = Directory.create_tree(params[:path])
 
-    tests_data = params[:tests]
+    directory.update!(tester_id: params[:tester_id])
 
-    tests = []
-
-    tests_data.each do |test_data|
-      tests << Test.create_uniq_in_dir(directory_id, test_data.to_hash.symbolize_keys)
-    end
-
+    tests = Test.create_uniq_in_dir(tests_data, directory.id)
     render json: tests
   end
 
