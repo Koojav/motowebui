@@ -1,5 +1,5 @@
 
-function prepareDropdownChangeTester()
+function prepareDropdownChangeDirectoryTester()
 {
     $('.tester-dropdown .tester-dropdown-menu li a').click(function ()
     {

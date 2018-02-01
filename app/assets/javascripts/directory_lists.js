@@ -1,13 +1,12 @@
-
-function prepareDropdownChangeTesterMultipleConnected()
+function prepareDropdownChangeDirectoriesTester()
 {
     var dropdownOptions = $(".tester-dropdown-multi .tester-dropdown-menu li a");
 
-    dropdownOptions.off('click.multiConnected');
-    dropdownOptions.on('click.multiConnected', btnDataTableChangeTester_click);
+    dropdownOptions.off('click.directoriesMultiConnected');
+    dropdownOptions.on('click.directoriesMultiConnected', btnChangeDirectoriesTester_click);
 }
 
-function btnDataTableChangeTester_click()
+function btnChangeDirectoriesTester_click()
 {
     var table = $(this).closest('table').DataTable();
 
@@ -45,7 +44,7 @@ function btnDataTableChangeTester_click()
 
 function prepareDataTableSubdirectories(paging)
 {
-    prepareDropdownChangeTesterMultipleConnected();
+    prepareDropdownChangeDirectoriesTester();
 
     // When DataTable is redrawn some fancier elements, like status buttons, require some additional setup to retain their functionality
     var dtSubdirs = $('#dt-subdirectories');
@@ -60,7 +59,7 @@ function prepareDataTableSubdirectories(paging)
 
         $(this).show();
 
-        prepareDropdownChangeTesterMultipleConnected();
+        prepareDropdownChangeDirectoriesTester();
     });
 
     // Initialize datatable

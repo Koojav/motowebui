@@ -33,11 +33,21 @@ class Api::TestsController < ApplicationController
   def update_multiple
     test_ids = params[:test_ids]
     result_id = params[:result_id]
+    tester_id = params[:tester_id]
 
-    Test.where(id: test_ids).update_all(result_id: result_id)
+    query_data = params.permit(:result_id, :tester_id).to_h
+
+    Test.where(id: test_ids).update_all(query_data)
+    if tester_id
+      tester_name = Tester.where(id: tester_id).pluck(:name)[0]
+    end
 
     # Unfortunately updating multiple records via ActiveRecord returns just the amount of rows modified
-    render json: test_ids.map {|id| {id: id, result_id: result_id} }
+    render json: test_ids.map { |id| {
+        id: id,
+        result_id: result_id,
+        tester_name: tester_name}
+    }
   end
 
 end
