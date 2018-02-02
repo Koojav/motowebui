@@ -1,0 +1,23 @@
+<% multiple_connected = false if multiple_connected.nil? %>
+
+<div class="btn-group tester-dropdown<%= multiple_connected ? '-multi' : '' %> " role="group" >
+  <button type="button"
+          class="btn-tester btn btn-xs btn-block dropdown-toggle"
+          data-toggle="dropdown"
+          <%= "data-directory-id=#{directory_id}" if defined?(directory_id)%>
+          <%= "data-test-id=#{test_id}" if defined?(test_id)%>
+  >
+    <%= selected_tester_name %> <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu tester-dropdown-menu">
+    <% testers_all.each do |tester| %>
+      <li>
+        <a data-tester-id="<%= tester.id %>"
+           <%= "data-directory-id=#{directory_id}" if defined?(directory_id)%>
+           <%= "data-test-id=#{test_id}" if defined?(test_id)%>
+           data-tester-name="<%= tester.name %>"><%= tester.name %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</div>

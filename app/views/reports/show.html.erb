@@ -1,0 +1,52 @@
+<div class="box box-primary">
+  <div class="box-body">
+    <div class="chart-responsive col-md-2">
+      <canvas class="directory-stats-chart" ></canvas>
+    </div>
+
+    <div class="col-md-1"></div>
+
+    <div class="col-md-3">
+      <table id="dt-report" class="table table-hover" style="display: none">
+        <thead>
+          <th></th>
+          <th>Status</th>
+          <th>Quantity</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class="fa fa-circle-o text-aqua"></i></td>
+            <td>Running</td>
+            <td><%= tests_stats['RUNNING'] %></td>
+          <tr></tr>
+            <td><i class="fa fa-circle-o text-green"></i></td>
+            <td>Pass</td>
+            <td><%= tests_stats['PASS'] %></td>
+          <tr></tr>
+            <td><i class="fa fa-circle-o text-red"></i></td>
+            <td>Fail</td>
+            <td><%= tests_stats['FAIL'] %></td>
+          <tr></tr>
+            <td><i class="fa fa-circle-o text-red"></i></td>
+            <td>Error</td>
+            <td><%= tests_stats['ERROR'] %></td>
+          <tr></tr>
+            <td><i class="fa fa-circle-o text-yellow"></i></td>
+            <td>Skip</td>
+            <td><%= tests_stats['SKIP'] %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-6"></div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function ()
+    {
+        prepareDirectoryStatsChart( <%= [tests_stats['RUNNING'], tests_stats['PASS'], tests_stats['FAIL'], tests_stats['ERROR'], tests_stats['SKIP']] %>);
+        prepareDataTableReport();
+    });
+</script>

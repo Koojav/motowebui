@@ -1,0 +1,1 @@
+<%= (navigation_path.map {|d| link_to d.id != 0 ? d.name + '/' : d.name, directory_path(d.id)}).reverse.join('').html_safe %>
