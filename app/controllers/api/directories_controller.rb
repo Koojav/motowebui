@@ -3,18 +3,18 @@ class Api::DirectoriesController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    if params.has_key?(:directory)
-      directories = [params[:directory]]
-    elsif params.has_key?(:directories)
-      directories = params[:directories]
-    else
-      raise "No 'directory' or 'directories' keys found in request parameters."
-    end
-
     created_directories = []
 
-    directories.each do |directory|
-      created_directories << Directory.create_tree(directory[:path])
+    if params.has_key?(:directories)
+
+      params[:directories].each do |directory|
+        created_directories << Directory.create_tree(directory[:path])
+      end
+
+    elsif params.has_key?(:directory) && params[:directory][:path]
+      created_directories << Directory.create_tree(params[:directory][:path])
+    else
+      raise "No 'directory' or 'directories' keys found in request parameters."
     end
 
     render json: created_directories

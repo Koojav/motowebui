@@ -76,63 +76,42 @@ When not using Docker you still may configure app just by setting appropriate EN
 
 # 4. Usage
 * Deploy
-* Provide data, via REST API, to be displayed. 
-    * Create Test Suite(s)
-    * Create Test Run(s) and assign it to Test Suite.
-    * Create Test(s) and assign them to Test Run.  
+* Provide data, via REST API, to be displayed such as: 
+    * Directories
+    * Tests and their results..  
 * Access and modify manually your data in various views:
-    * `yourdomain:3000` - list of all Test Suites
-    * `yourdomain:3000/suites/SUITE_ID/runs` - list of Test Runs in a Test Suite
-    * `yourdomain:3000/suites/SUITE_ID/runs/RUN_ID` - details of a Test Run + list of Tests in it
-    * `yourdomain:3000/suites/SUITE_ID/runs/RUN/tests/TEST_ID` - details of a Test
+    * `yourdomain:3000` - redirects to root directory (ID: 0)
+    * `yourdomain:3000/directories/ID` - list of Subdirectories and Tests in a Directory
+    * `yourdomain:3000/directories/ID/tests/TEST_ID` - details of a Test
 
 **Note:** For technical details please consult `REST API` section.
 
 
 # 5. Data structure and functionality
-Project is composed out of a few data structures that stay in close relation with each other.  
 
-**TL;DR**
-
-    Test Suites group Test Runs, which in turn group Tests.  
-    Test Runs can have responsible Testers assigned to them.  
-    Tests can have Logs.  
-    Test Runs and Tests have Results.    
+    Directories contain Directories and Tests
+    Directories and Tests can have responsible Testers assigned to them.    
+    Tests have Results.  
+    Tests can have Logs.    
 
 
-### 5.1 Test Suites
-**Info:** Test Suites should represent 'packages' of tests, for example: `Regression 16.20`  
-**Creation policy:** Only one Test Suite of a certain name, case insensitive, can exist at the same time. 
-When creating new Test Suite with previously existing name the existing Test Suite will be retrieved.  
+### 5.1 Directories
+**Info:** Directory has its path, subdirectories (optional) and Tests (optional).  
+**Creation policy:** When creating a Directory MWUI will automatically create 
+all parent directories in order to fulfill path requirement  
 **Fields:** 
 
-* **name** `String` Test Suite's name.  
+* **name** `String` Directory's name 
+* **path** `String` Directory's full path 
+* **parent_id** `String` Directory's parent's ID. 
 
-### 5.2 Test Runs
-**Info:** Test Runs have unique names in the scope of Test Suite.   
-**Creation policy:** Only one Test Run of a certain name, case insensitive, can exist at the same time. 
-When creating new Test Run with previously existing name the existing Test Run will be retrieved.  
-**Fields:** 
-
-* **name** `String` Test Run's name.
-* **start_time** `Integer` Epoch, in seconds.
-* **duration** `Integer` In seconds.  
-* **suite_id** `Integer` ID of Test Suite to which Test Run belongs.
-* **tester_id** `Integer` ID of Tester assigned to Test Run.  
-* **stats_tests_all** `Integer` Number of all Tests in Test Run.  
-* **stats_tests_pass** `Integer` Number of passed Tests in Test Run.  
-* **stats_tests_error** `Integer` Number of erorr Tests in Test Run.  
-* **stats_tests_fail** `Integer` Number of failed Tests in Test Run.  
-* **stats_tests_skip** `Integer` Number of skipped Tests in Test Run.  
-* **stats_tests_running** `Integer` Number of running Tests in Test Run.  
 
 ### 5.2 Tests
 **Info:** Outcome of a singular Test.  
-**Creation policy:** Tests must have unique, case insensitive, names in scope of Test Run. 
-When creating a Test with previously existing name old one will be deleted first then new one created in it's place with the same ID so old URLs still point to something.  
+**Creation policy:** Tests must have unique, case insensitive, names in scope of a Directory. When Test will overwrite ones with the same name.  
 **Fields:** 
 
-* **name** `String` Test Run's name.
+* **name** `String` Test's name.
 * **start_time** `Integer` Epoch, in seconds.
 * **duration** `Integer` In seconds.
 * **result_id** `Integer` ID of Test's result.
@@ -140,7 +119,7 @@ When creating a Test with previously existing name old one will be deleted first
 * **fail_message** `String` Any message that accompanies Test and is to be displayed in the 'Failure' section of Test's details.
 * **ticket_url** `String` URL to external work tracking system (for example Jira) which will be displayed on Test's view.
 * **tags** `String` Array of tags, joined on '`', which will be displayed on Test's view.
-* **run_id** `Integer`  ID of Test Run to which this tests belongs.
+* **directory_id** `Integer`  ID of Directory to which this tests belongs.
 
 ### 5.2 Results
 **Info:** Represents one of the many possible outcomes of Test.  
@@ -149,10 +128,10 @@ When creating a Test with previously existing name old one will be deleted first
 
 * **name** `String` Result's displayed name.
 * **manual** `Boolean` Indicates whether result can be set manually via GUI.
-* **category** `String` Categories group various results. They are the actual value based on which Test Runs' stats are evaluated. Result's name is just for display purposes.
+* **category** `String` Categories group various results. Result's name is just for display purposes.
 
 ### 5.2 Testers
-**Info:** Represent a person that can be assigned to Test Run and be displayed as responsible one.  
+**Info:** Represent a person that can be assigned to Directory or Test and be displayed as responsible one.  
 **Creation policy:** Testers must have a unique name.  
 **Fields:** 
 
@@ -166,18 +145,6 @@ When creating a Test with previously existing name old one will be deleted first
 * **text** `String` Log's text.
 
 
-**Example**:  
-
-* Test Suite "Regression 16.20" 
-    * Test Run "Public API"
-        * Tests 1..N
-    * Test Run "REST API"
-        * Tests 1..N
-    * Test Run "Web UI"
-        * Tests 1..N
-
-
-
 # 6. REST API
 All data that is required to describe appropriate test sets can be created, modified and deleted via REST API.  
 Below is a reference list of all endpoints available in the API.  
@@ -187,104 +154,70 @@ Below is a reference list of all endpoints available in the API.
 **Input and output format for all calls is JSON.**  
   
   
-{base_url} is the domain, on which MotoWebUI is deployed, followed by a port (3000 by default).  
+{api_url} is the domain, on which MotoWebUI is deployed, followed by `/api` and port (3000 by default).  
 
 
-## Test Suites 
-`[GET] {base_url}/api/suites`  
+## Directories 
+`[POST] {api_url}/directories`  
+**Payload:** 
+
+    { "directory": {"path":"/directory/creation/example"} }
+    
+or
+
+    { "directories": [{"path":"/dir/subdir1"}, {"path":"/dir/subdir2"}] }
+
+**Returns:** Created or previously existing Directories.  
+
+---
+
+`[GET] {api_url}/directories/ID`  
 **Payload:** None  
-**Returns:** List of all Test Suites.   
+**Returns:** Directory with provided ID.
 
 ---
  
-`[POST] {base_url}/api/suites`  
+`[PUT] {api_url}/directories/ID/`  
 **Payload:** 
-
-* name `String` - Test Suite's name  
-
-**Returns:** Created Test Suite or existing one if provided name matched, case insensitively, with a name of previously created Test Suite.  
-
----
-
-`[GET] {base_url}/api/suites/SUITE_ID`  
-**Payload:** None  
-**Returns:** Test Suite with provided ID.
+   
+All fields are optional
+    
+    { "name": "new_name", "tester_id": 2, "parent_id": 37 }
+    
+**Returns:** Modified directory
 
 ---
- 
-`[PUT] {base_url}/api/suites/SUITE_ID/batchtesters`  
-**Payload:** 
-
-* run_ids `Array` - Array of Run IDs which should have their tester modified.
-* tester_id `Integer` - ID of tester which will be assigned to all provided Runs.
-**Returns:** Collection of modified Runs.
-
----
-
-`[DELETE] {base_url}/api/suites/SUITE_ID`  
-**Payload:** None  
-**Returns:** Test Suite with provided ID, which has just been deleted. Removal of Test Runs, Tests and Logs aggregated by this Test Suite will be automatically chained and executed.
-
   
-## Test Runs
-`[GET] {base_url}/api/suites/SUITE_ID/runs`  
+`[PUT] {api_url}/directories`  
+**Payload:**  
+    
+Allows for `tester_id` to be changed on multiple Directories at the same time.
+    
+    { "directory_ids": [1,2,3,4], "tester_id": 2 }
+    
+**Returns:** Modified directories
+
+---
+
+`[DELETE] {api_url}/directories/ID`  
 **Payload:** None  
-**Returns:** List of all Test Runs that belong to a specified Test Suite.
-
----
- 
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID`  
-**Payload:** None  
-**Returns:** Test Run
-
----
- 
-`[POST] {base_url}/api/suites/SUITE_ID/runs`  
-**Payload:** 
-
-* name `String` - Test Run's name
-* start_time `Integer` _(optional)_ - Time of start, Epoch, in seconds.
-* duration `Integer` _(optional)_ - Duration of test, in seconds.
-* tester_id `Integer` _(optional)_ - ID of a Tester to be assigned to this Test Run. Default: 1 ('Not assigned')
-* stats_dirty `Boolean` _(optional)_ - Set to true to force validation of Tests' stats in a Test Run.
-**Returns:** Created Test Run or existing one if provided name matched, case insensitively, with a name of previously created Test Run.
-
----
- 
-`[PUT] {base_url}/api/suites/SUITE_ID/runs`  
-**Payload:** Same as with `POST` to this endpoint  
-**Returns:** Modified Test Run.
-
----
- 
-`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/batchresults`  
-**Payload:** 
-
-* test_ids `Array` - Array of Test IDs which should have their result modified.
-* result_id `Integer` - ID of result which will be assigned to all provided Tests.
-**Returns:** Collection of modified Tests.
-
----
- 
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID`  
-**Payload:** None  
-**Returns:** Test Run with provided ID, which has just been deleted. Removal of Tests and Logs aggregated by this Test Run will be automatically chained and executed.  
-
+**Returns:** Directory with provided ID, which has just been deleted. Removal of Subdirectories and Tests aggregated by this entity will be automatically chained and executed.
+  
   
 ## Tests
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`  
+`[GET] {api_url}/directories/ID/tests`  
 **Payload:** None  
-**Returns:** List of all Test that belong to a specified Test Run.  
+**Returns:** List of all Test that belong to a specified Directory.  
 
 ---
  
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`  
+`[GET] {api_url}/directories/ID/tests/TEST_ID`  
 **Payload:** None  
-**Returns:** Test  
+**Returns:** Test details  
 
 ---
  
-`[POST] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests`  
+`[POST] {api_url}/directories/ID/tests`  
 **Payload:** 
 
 * name `String` - Test's name
@@ -296,29 +229,38 @@ Below is a reference list of all endpoints available in the API.
 * fail_message `String` _(optional)_ - Text to be displayed as 'Failures'.
 * result_id `Integer` _(optional)_ - ID of a Result which will be assigned to this Test. Default: 1 ('Running').
 
-**Returns:** Creates Test and returns it. Will delete previously existing Test first if it had the same name (Test Run scope, case insensitive, ID is stored so URLs will be still valid).
+**Returns:** Creates Test and returns it. Will delete previously existing Test first if it had the same name (Directory's scope, case insensitive, ID is stored so URLs will be still valid).
 
 ---
  
-`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`  
+`[PUT] {api_url}/directories/ID/tests/TEST_ID`  
 **Payload:** Same as with `POST` to this endpoint.  
 **Returns:** Modified Test.
 
+---  
+ 
+`[PUT] {api_url}/tests/`  
+**Payload:** Allows for modifying Result and/or assigned Tester in multiple Tests at the same time.  
+
+    {"test_ids": [4,5,6], "result_id": 3, "tester_id": 2}
+
+**Returns:** Modified Tests.
+
 ---
  
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID`  
+`[DELETE] {api_url}/directories/ID/tests/TEST_ID`  
 **Payload:** None  
-**Returns:** Test with provided ID, which has just been deleted. Removal of Log assigned to this Test will be automatically chained and executed.  
+**Returns:** Test with provided ID, which has just been deleted. **Logs will not be automatically removed** 
 
   
 ## Logs
-`[GET] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
+`[GET] {api_url}/directories/ID/tests/TEST_ID/logs`  
 **Payload:** None  
 **Returns:** Test's Log.
 
 ---
  
-`[POST] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
+`[POST] {api_url}/directories/ID/tests/TEST_ID/logs`  
 **Payload:** 
 
 * text `String` - Log's text
@@ -326,31 +268,31 @@ Below is a reference list of all endpoints available in the API.
 
 ---
  
-`[PUT] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
+`[PUT] {api_url}/directories/ID/tests/TEST_ID/logs`  
 **Payload:** Same as with `POST` to this endpoint.  
 **Returns:** Modified Log.
 
 ---
  
-`[DELETE] {base_url}/api/suites/SUITE_ID/runs/RUN_ID/tests/TEST_ID/logs`  
+`[DELETE] {api_url}/directories/ID/tests/TEST_ID/logs`  
 **Payload:** None  
 **Returns:** Deletes Log from specified Test. Returns its content before deletion. 
 
   
 ## Testers
-`[GET] {base_url}/api/testers`  
+`[GET] {api_url}/testers`  
 **Payload:** None  
 **Returns:** List of all Testers.  
 
 ---
  
-`[GET] {base_url}/api/testers/TESTER_ID`  
+`[GET] {api_url}/testers/TESTER_ID`  
 **Payload:** None  
 **Returns:** Tester with specified ID.
 
 ---
  
-`[POST] {base_url}/api/testers`  
+`[POST] {api_url}/testers`  
 **Payload:** 
 
 * name `String` - Tester's name
@@ -358,13 +300,13 @@ Below is a reference list of all endpoints available in the API.
 
 ---
 
-`[PUT] {base_url}/api/testers/TESTER_ID`  
+`[PUT] {api_url}/testers/TESTER_ID`  
 **Payload:** Same as with `POST` to this endpoint.  
 **Returns:** Modified Tester.
 
 ---
 
-`[DELETE] {base_url}/api/testers/TESTER_ID`  
+`[DELETE] {api_url}/testers/TESTER_ID`  
 **Payload:** None  
 **Returns:** Retrieves Tester that's being deleted.
 
@@ -373,19 +315,19 @@ Below is a reference list of all endpoints available in the API.
 **Important:** Do not modify `Results` unless you're 100% sure you know what you're doing.  
 For more information please consult the `Data structure` section.  
 
-`[GET] {base_url}/api/results`  
+`[GET] {api_url}/results`  
 **Payload:** None  
 **Returns:** List of all possible Results. 
 
 ---
 
-`[GET] {base_url}/api/results/RESULT_ID`  
+`[GET] {api_url}/results/RESULT_ID`  
 **Payload:** None  
 **Returns:** Info about specified Result.
 
 ---
 
-`[POST] {base_url}/api/results`  
+`[POST] {api_url}/results`  
 **Payload:** 
 
 * name `String` - Tester's name
@@ -396,15 +338,24 @@ For more information please consult the `Data structure` section.
  
 ---
 
-`[PUT] {base_url}/api/results/RESULT_ID`  
+`[PUT] {api_url}/results/RESULT_ID`  
 **Payload:** Same as with `POST` to this endpoint.  
 **Returns:** Modified Result.
 
 ---
 
-`[DELETE] {base_url}/api/results/RESULT_ID`  
+`[DELETE] {api_url}/results/RESULT_ID`  
 **Payload:** None  
 **Returns:** Retrieves Result which is being deleted.  
+
+
+## MotoResults
+Special endpoint used for integration with **[Moto Framework](https://github.com/bwilczek/moto)**  
+Allows for creating multiple Tests in a certain Directory, which too will be created if doesn't exist,
+
+`[POST] {api_url}/motoresults`
+    
+    {"path": "/directory/path", "tester_id": 2, "tests": [{TEST1}, {TEST2}] }
 
 
 # 7. Technologies used
